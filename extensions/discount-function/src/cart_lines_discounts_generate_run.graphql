@@ -1,0 +1,29 @@
+query CartInput {
+  cart {
+    lines {
+      id
+      cost {
+        amountPerQuantity {
+          amount
+        }
+      }
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          id
+          product {
+            # A product is treated as an "upsell" (e.g. the wipes) when it has
+            # this metafield. It's the same metafield the cart drawer reads to
+            # show the deal price, so the charge and the display always match.
+            upsellPrice: metafield(namespace: "custom", key: "upsell_price") {
+              value
+            }
+          }
+        }
+      }
+    }
+  }
+  discount {
+    discountClasses
+  }
+}

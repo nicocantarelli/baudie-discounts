@@ -1,0 +1,11 @@
+{
+  "name": "Baudie upsell discount",
+  "description": "Discounts upsell products (any product with a custom.upsell_price metafield) to their deal price whenever a qualifying product is in the cart.",
+  "title": "Upsell discount",
+  "intro": "While this discount is active, any upsell product in the cart is automatically sold at its deal price — for any quantity, and as many upsell products as the customer adds.",
+  "pricesNote": "Deal prices come from each product's “Upsell price” (custom.upsell_price) metafield. To change a deal price, edit that metafield on the product — you don't need to touch this discount. It's also the same value shown on the cart's upsell cards, so the price the customer sees always matches what they're charged.",
+  "qualifierNote": "The discount only applies when the cart also contains a regular (non-upsell) product. A cart of only upsell products stays at full price.",
+  "productLabel": "Product discount (keep this on)",
+  "productHelp": "This is the only setting. It lets the discount apply to products and is turned on for you — there's nothing else to configure here.",
+  "error": "Unable to update the discount. Please try again."
+}

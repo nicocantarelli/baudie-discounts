@@ -1,0 +1,23 @@
+{
+  "payload": {
+    "export": "cart-lines-discounts-generate-run",
+    "target": "cart.lines.discounts.generate.run",
+    "input": {
+      "cart": {
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/0",
+            "cost": { "amountPerQuantity": { "amount": "9.0" } },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/20",
+              "product": { "upsellPrice": { "value": "8.00" } }
+            }
+          }
+        ]
+      },
+      "discount": { "discountClasses": ["PRODUCT"] }
+    },
+    "output": { "operations": [] }
+  }
+}

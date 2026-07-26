@@ -1,0 +1,28 @@
+api_version = "2026-04"
+
+[[extensions]]
+name = "t:name"
+handle = "discount-function"
+type = "function"
+uid = "630829f6-2180-df6b-6a08-656aa871d3f31c3e344a"
+description = "t:description"
+
+  [[extensions.targeting]]
+  target = "cart.lines.discounts.generate.run"
+  input_query = "src/cart_lines_discounts_generate_run.graphql"
+  export = "cart-lines-discounts-generate-run"
+
+  [[extensions.targeting]]
+  target = "cart.delivery-options.discounts.generate.run"
+  input_query = "src/cart_delivery_options_discounts_generate_run.graphql"
+  export = "cart-delivery-options-discounts-generate-run"
+
+  # Renders the admin settings panel (extensions/discount-ui) on the discount's
+  # page. Without this, the admin has no inline UI and falls back to the blank
+  # app page. The handle must match discount-ui's handle in its toml.
+  [extensions.ui]
+  handle = "discount-ui"
+
+  [extensions.build]
+  command = ""
+  path = "dist/function.wasm"

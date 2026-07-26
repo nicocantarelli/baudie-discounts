@@ -1,0 +1,49 @@
+{
+  "payload": {
+    "export": "cart-lines-discounts-generate-run",
+    "target": "cart.lines.discounts.generate.run",
+    "input": {
+      "cart": {
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/0",
+            "cost": { "amountPerQuantity": { "amount": "22.0" } },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/10",
+              "product": { "upsellPrice": null }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/1",
+            "cost": { "amountPerQuantity": { "amount": "9.0" } },
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/20",
+              "product": { "upsellPrice": { "value": "8.00" } }
+            }
+          }
+        ]
+      },
+      "discount": { "discountClasses": ["PRODUCT"] }
+    },
+    "output": {
+      "operations": [
+        {
+          "productDiscountsAdd": {
+            "selectionStrategy": "ALL",
+            "candidates": [
+              {
+                "message": "Upsell deal",
+                "targets": [{ "cartLine": { "id": "gid://shopify/CartLine/1" } }],
+                "value": {
+                  "fixedAmount": { "amount": "1.00", "appliesToEachItem": true }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
