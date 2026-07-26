@@ -1,6 +1,6 @@
 # Baudie Discounts — Shopify Discount Function
 
-Automatic discount for the **Baudie** storefront, implemented as a Shopify Function (JavaScript compiled to WASM, executed by Shopify at cart evaluation time). Extension-only app — no server.
+Automatic discount for the **Baudie** storefront ([baudie.com](https://baudie.com)), implemented as a Shopify Function (JavaScript compiled to WASM, executed by Shopify at cart evaluation time). Extension-only app — no server.
 
 Works as one half of a two-app system with [baudie-checkout-upsell](https://github.com/nicocantarelli/baudie-checkout-upsell): the checkout extension *shows* the deal, this function *enforces* it — pricing can never depend on client-side code.
 
