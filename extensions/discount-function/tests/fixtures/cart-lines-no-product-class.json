@@ -8,6 +8,7 @@
           {
             "id": "gid://shopify/CartLine/0",
             "cost": { "amountPerQuantity": { "amount": "22.0" } },
+            "sellingPlanAllocation": null,
             "merchandise": {
               "__typename": "ProductVariant",
               "id": "gid://shopify/ProductVariant/10",
@@ -17,6 +18,7 @@
           {
             "id": "gid://shopify/CartLine/1",
             "cost": { "amountPerQuantity": { "amount": "9.0" } },
+            "sellingPlanAllocation": null,
             "merchandise": {
               "__typename": "ProductVariant",
               "id": "gid://shopify/ProductVariant/20",

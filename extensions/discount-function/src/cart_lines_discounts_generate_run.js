@@ -14,7 +14,8 @@ const NO_DISCOUNT = { operations: [] };
  * Discounts every "upsell" product down to its deal price, for ANY quantity,
  * WHENEVER the cart also contains at least one non-upsell product. A cart of
  * only upsell products gets no discount (so the wipes keep full price on their
- * own / on the product page).
+ * own / on the product page). Subscribed (selling plan) upsell lines are never
+ * discounted — they get only the subscription price.
  *
  * "Upsell product" = any product carrying a `custom.upsell_price` metafield
  * (the same value the cart drawer shows on the upsell cards). The deal price is
@@ -62,6 +63,11 @@ export function cartLinesDiscountsGenerateRun(input) {
   for (const line of lines) {
     const deal = dealPriceOf(line);
     if (deal === null) continue;
+
+    // Subscriptions already carry their own discount (Appstle's selling plan
+    // price) and must not stack with the deal, so subscribed lines are skipped.
+    // A subscription line of a regular product still counts as a qualifier.
+    if (line.sellingPlanAllocation) continue;
 
     const unit = parseFloat(line.cost.amountPerQuantity.amount);
     if (!(unit > deal)) continue; // already at or below the deal price

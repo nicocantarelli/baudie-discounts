@@ -7,6 +7,14 @@ query CartInput {
           amount
         }
       }
+      # Present when the line is a subscription (Appstle selling plan). A
+      # subscribed upsell product gets only the subscription price, never the
+      # upsell deal on top.
+      sellingPlanAllocation {
+        sellingPlan {
+          id
+        }
+      }
       merchandise {
         __typename
         ... on ProductVariant {

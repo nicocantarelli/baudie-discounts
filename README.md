@@ -11,7 +11,8 @@ Designed and built by Nicolas Cantarelli for Lumios Digital.
 The cart-lines run discounts **every upsell product down to its per-product deal price, at any quantity — but only while the cart also contains at least one non-upsell product**. A cart of only upsell products gets no discount, so upsell items keep full price on their own product pages and standalone purchases.
 
 - **`custom.upsell_price` metafield contract** — any product carrying the metafield is an upsell product and the value *is* its deal price. New upsell products need zero code: set the metafield and they're covered, each at its own price
-- **Qualifier rule** — a product *without* the metafield is a qualifier; at least one must be in the cart for the deal to fire (same rule the checkout extension and theme side-cart use for display)
+- **Qualifier rule** — a product *without* the metafield is a qualifier; at least one must be in the cart for the deal to fire (same rule the checkout extension and theme side-cart use for display). Subscription lines of regular products count as qualifiers too
+- **No stacking with subscriptions** — a *subscribed* upsell line (one with an Appstle selling plan, e.g. wipes on Subscribe & save) is never discounted: it gets only the subscription price. Upsells added from the cart or checkout are always one-time, so they still get the deal
 - **Single-function design** — one function backs one automatic discount that handles every upsell product and quantity at once, sidestepping Shopify's "only one automatic discount applies" conflicts
 - **Delivery target is an intentional no-op** — the function can never emit a shipping discount regardless of which discount classes get enabled on the discount node
 - **`discount-ui`** — an admin UI extension providing the discount's configuration screen in the Shopify admin
