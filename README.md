@@ -4,7 +4,7 @@ Automatic discount for the **Baudie** storefront ([baudie.com](https://baudie.co
 
 Works as one half of a two-app system with [baudie-checkout-upsell](https://github.com/nicocantarelli/baudie-checkout-upsell): the checkout extension *shows* the deal, this function *enforces* it — pricing can never depend on client-side code.
 
-Designed and built by Nicolas Cantarelli for Lumios Digital.
+Designed and built by Nicolas Cantarelli.
 
 ## How it works
 
