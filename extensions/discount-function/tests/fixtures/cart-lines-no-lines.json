@@ -3,9 +3,26 @@
     "export": "cart-lines-discounts-generate-run",
     "target": "cart.lines.discounts.generate.run",
     "input": {
-      "cart": { "lines": [] },
-      "discount": { "discountClasses": ["PRODUCT"] }
+      "cart": {
+        "giftPreview": null,
+        "lines": []
+      },
+      "shop": {
+        "localTime": {
+          "date": "2026-10-20"
+        },
+        "giftPromo": null
+      },
+      "enteredDiscountCodes": [],
+      "presentmentCurrencyRate": "1.0",
+      "discount": {
+        "discountClasses": [
+          "PRODUCT"
+        ]
+      }
     },
-    "output": { "operations": [] }
+    "output": {
+      "operations": []
+    }
   }
 }

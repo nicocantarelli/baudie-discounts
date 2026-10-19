@@ -2,13 +2,67 @@ import {
   DiscountClass,
   ProductDiscountSelectionStrategy,
 } from '../generated/api';
+import {
+  codeRejection,
+  giftCandidates,
+  giftPromoIsRunning,
+  giftPromoSettings,
+  isGiftLine,
+} from './gift_with_purchase';
 
 /**
  * @typedef {import("../generated/api").CartInput} RunInput
  * @typedef {import("../generated/api").CartLinesDiscountsGenerateRunResult} CartLinesDiscountsGenerateRunResult
+ * @typedef {import("../generated/api").ProductDiscountCandidate} ProductDiscountCandidate
  */
 
-const NO_DISCOUNT = { operations: [] };
+/**
+ * One Shopify Function = one automatic discount, running both deals:
+ *
+ * - the upsell deal (upsellCandidates below), and
+ * - gift with purchase (./gift_with_purchase.js): while a promo runs, the
+ *   theme's gift lines are free once their spend tier is reached, and every
+ *   discount code is rejected.
+ *
+ * A single discount means there's no "only one automatic discount applies"
+ * conflict: both deals always apply together, with no combination settings to
+ * keep in sync.
+ *
+ * @param {RunInput} input
+ * @returns {CartLinesDiscountsGenerateRunResult}
+ */
+export function cartLinesDiscountsGenerateRun(input) {
+  const promo = giftPromoSettings(input);
+  const promoRunning = giftPromoIsRunning(input, promo);
+
+  const operations = [];
+
+  // Discounts are only emitted when the discount node has the Product class
+  // enabled. Rejecting codes doesn't depend on it.
+  if (input.discount.discountClasses.includes(DiscountClass.Product)) {
+    const candidates = [
+      ...upsellCandidates(input),
+      ...(promoRunning ? giftCandidates(input, promo) : []),
+    ];
+    if (candidates.length) {
+      operations.push({
+        productDiscountsAdd: {
+          // ALL => every candidate applies (each targets a different line), so
+          // all upsell products and gifts in the cart are discounted at once.
+          selectionStrategy: ProductDiscountSelectionStrategy.All,
+          candidates,
+        },
+      });
+    }
+  }
+
+  if (promoRunning) {
+    const rejection = codeRejection(input, promo);
+    if (rejection) operations.push(rejection);
+  }
+
+  return { operations };
+}
 
 /**
  * Discounts every "upsell" product down to its deal price, for ANY quantity,
@@ -23,22 +77,14 @@ const NO_DISCOUNT = { operations: [] };
  * each land at their own price, and any future upsell product is covered just
  * by setting its metafield.
  *
- * One Shopify Function = one automatic discount, so there's no "only one
- * automatic discount applies" conflict: this single discount handles every
- * upsell product and every quantity at once.
+ * Free gift lines are never upsell-discounted: the gift deal makes them free.
  *
  * @param {RunInput} input
- * @returns {CartLinesDiscountsGenerateRunResult}
+ * @returns {ProductDiscountCandidate[]}
  */
-export function cartLinesDiscountsGenerateRun(input) {
+function upsellCandidates(input) {
   const lines = input.cart.lines;
-  if (!lines.length) return NO_DISCOUNT;
-
-  // We only emit product discounts, so do nothing unless the discount node has
-  // the Product class enabled.
-  if (!input.discount.discountClasses.includes(DiscountClass.Product)) {
-    return NO_DISCOUNT;
-  }
+  if (!lines.length) return [];
 
   // The deal (target) price for a line, or null if it isn't an upsell product.
   const dealPriceOf = (line) => {
@@ -57,12 +103,16 @@ export function cartLinesDiscountsGenerateRun(input) {
       line.merchandise.__typename === 'ProductVariant' &&
       dealPriceOf(line) === null,
   );
-  if (!hasQualifier) return NO_DISCOUNT;
+  if (!hasQualifier) return [];
 
   const candidates = [];
   for (const line of lines) {
     const deal = dealPriceOf(line);
     if (deal === null) continue;
+
+    // A free gift that happens to be an upsell product (e.g. the wipes) is
+    // discounted by the gift deal instead.
+    if (isGiftLine(line)) continue;
 
     // Subscriptions already carry their own discount (Appstle's selling plan
     // price) and must not stack with the deal, so subscribed lines are skipped.
@@ -85,18 +135,5 @@ export function cartLinesDiscountsGenerateRun(input) {
       },
     });
   }
-  if (!candidates.length) return NO_DISCOUNT;
-
-  return {
-    operations: [
-      {
-        productDiscountsAdd: {
-          // ALL => every candidate applies (each targets a different line), so
-          // all upsell products in the cart are discounted at once.
-          selectionStrategy: ProductDiscountSelectionStrategy.All,
-          candidates,
-        },
-      },
-    ],
-  };
+  return candidates;
 }

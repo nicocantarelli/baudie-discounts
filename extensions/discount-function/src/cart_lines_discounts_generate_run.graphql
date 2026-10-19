@@ -1,11 +1,25 @@
 query CartInput {
   cart {
+    # Set by the theme while a gift promo is in Preview mode (?gift_preview=1),
+    # so the promo only runs for the merchant's own cart.
+    giftPreview: attribute(key: "_gift_preview") {
+      value
+    }
     lines {
       id
+      quantity
       cost {
         amountPerQuantity {
           amount
         }
+        subtotalAmount {
+          amount
+        }
+      }
+      # Present on lines the theme added as free gifts: "tier:1".."tier:3" for
+      # promo tiers, "vip:<code prefix>" for VIP code gifts.
+      gift: attribute(key: "_gift") {
+        value
       }
       # Present when the line is a subscription (Appstle selling plan). A
       # subscribed upsell product gets only the subscription price, never the
@@ -31,6 +45,23 @@ query CartInput {
       }
     }
   }
+  shop {
+    localTime {
+      date
+    }
+    # Gift with purchase settings, saved by the discount's settings panel
+    # (extensions/discount-ui). The theme reads the same metafield, so the cart
+    # drawer and checkout always agree on the promo.
+    giftPromo: metafield(namespace: "baudie", key: "gift_promo") {
+      jsonValue
+    }
+  }
+  # Codes the customer entered. While a gift promo runs, every one is rejected.
+  enteredDiscountCodes {
+    code
+    rejectable
+  }
+  presentmentCurrencyRate
   discount {
     discountClasses
   }

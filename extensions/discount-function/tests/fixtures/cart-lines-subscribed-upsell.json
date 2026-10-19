@@ -4,40 +4,98 @@
     "target": "cart.lines.discounts.generate.run",
     "input": {
       "cart": {
+        "giftPreview": null,
         "lines": [
           {
             "id": "gid://shopify/CartLine/0",
-            "cost": { "amountPerQuantity": { "amount": "18.7" } },
-            "sellingPlanAllocation": { "sellingPlan": { "id": "gid://shopify/SellingPlan/1" } },
+            "quantity": 1,
+            "cost": {
+              "amountPerQuantity": {
+                "amount": "18.7"
+              },
+              "subtotalAmount": {
+                "amount": "18.7"
+              }
+            },
+            "gift": null,
+            "sellingPlanAllocation": {
+              "sellingPlan": {
+                "id": "gid://shopify/SellingPlan/1"
+              }
+            },
             "merchandise": {
               "__typename": "ProductVariant",
               "id": "gid://shopify/ProductVariant/10",
-              "product": { "upsellPrice": null }
+              "product": {
+                "upsellPrice": null
+              }
             }
           },
           {
             "id": "gid://shopify/CartLine/1",
-            "cost": { "amountPerQuantity": { "amount": "20.4" } },
-            "sellingPlanAllocation": { "sellingPlan": { "id": "gid://shopify/SellingPlan/2" } },
+            "quantity": 1,
+            "cost": {
+              "amountPerQuantity": {
+                "amount": "20.4"
+              },
+              "subtotalAmount": {
+                "amount": "20.4"
+              }
+            },
+            "gift": null,
+            "sellingPlanAllocation": {
+              "sellingPlan": {
+                "id": "gid://shopify/SellingPlan/2"
+              }
+            },
             "merchandise": {
               "__typename": "ProductVariant",
               "id": "gid://shopify/ProductVariant/30",
-              "product": { "upsellPrice": { "value": "19.00" } }
+              "product": {
+                "upsellPrice": {
+                  "value": "19.00"
+                }
+              }
             }
           },
           {
             "id": "gid://shopify/CartLine/2",
-            "cost": { "amountPerQuantity": { "amount": "9.0" } },
+            "quantity": 1,
+            "cost": {
+              "amountPerQuantity": {
+                "amount": "9.0"
+              },
+              "subtotalAmount": {
+                "amount": "9.0"
+              }
+            },
+            "gift": null,
             "sellingPlanAllocation": null,
             "merchandise": {
               "__typename": "ProductVariant",
               "id": "gid://shopify/ProductVariant/20",
-              "product": { "upsellPrice": { "value": "8.00" } }
+              "product": {
+                "upsellPrice": {
+                  "value": "8.00"
+                }
+              }
             }
           }
         ]
       },
-      "discount": { "discountClasses": ["PRODUCT"] }
+      "shop": {
+        "localTime": {
+          "date": "2026-10-20"
+        },
+        "giftPromo": null
+      },
+      "enteredDiscountCodes": [],
+      "presentmentCurrencyRate": "1.0",
+      "discount": {
+        "discountClasses": [
+          "PRODUCT"
+        ]
+      }
     },
     "output": {
       "operations": [
@@ -47,9 +105,18 @@
             "candidates": [
               {
                 "message": "Upsell deal",
-                "targets": [{ "cartLine": { "id": "gid://shopify/CartLine/2" } }],
+                "targets": [
+                  {
+                    "cartLine": {
+                      "id": "gid://shopify/CartLine/2"
+                    }
+                  }
+                ],
                 "value": {
-                  "fixedAmount": { "amount": "1.00", "appliesToEachItem": true }
+                  "fixedAmount": {
+                    "amount": "1.00",
+                    "appliesToEachItem": true
+                  }
                 }
               }
             ]

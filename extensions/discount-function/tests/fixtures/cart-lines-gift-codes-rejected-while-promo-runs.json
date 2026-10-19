@@ -1,0 +1,101 @@
+{
+  "payload": {
+    "export": "cart-lines-discounts-generate-run",
+    "target": "cart.lines.discounts.generate.run",
+    "input": {
+      "cart": {
+        "giftPreview": null,
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/0",
+            "quantity": 1,
+            "cost": {
+              "amountPerQuantity": {
+                "amount": "22.0"
+              },
+              "subtotalAmount": {
+                "amount": "22.0"
+              }
+            },
+            "gift": null,
+            "sellingPlanAllocation": null,
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/10",
+              "product": {
+                "upsellPrice": null
+              }
+            }
+          }
+        ]
+      },
+      "shop": {
+        "localTime": {
+          "date": "2026-10-20"
+        },
+        "giftPromo": {
+          "jsonValue": {
+            "status": "on",
+            "startDate": null,
+            "endDate": null,
+            "tiers": [
+              {
+                "minimum": "60.00",
+                "variantId": "gid://shopify/ProductVariant/20",
+                "quantity": 1
+              },
+              {
+                "minimum": "90.00",
+                "variantId": "gid://shopify/ProductVariant/11",
+                "quantity": 1
+              },
+              {
+                "minimum": "120.00",
+                "variantId": "gid://shopify/ProductVariant/11",
+                "quantity": 2
+              }
+            ],
+            "vip": [
+              {
+                "prefix": "VIP3",
+                "variantId": "gid://shopify/ProductVariant/20",
+                "quantity": 1
+              }
+            ],
+            "codesBlockedMessage": "Codes are paused during our gift promo."
+          }
+        }
+      },
+      "enteredDiscountCodes": [
+        {
+          "code": "SAVE10",
+          "rejectable": true
+        },
+        {
+          "code": "STAFF",
+          "rejectable": false
+        }
+      ],
+      "presentmentCurrencyRate": "1.0",
+      "discount": {
+        "discountClasses": [
+          "PRODUCT"
+        ]
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "enteredDiscountCodesReject": {
+            "codes": [
+              {
+                "code": "SAVE10"
+              }
+            ],
+            "message": "Codes are paused during our gift promo."
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "payload": {
+    "export": "cart-lines-discounts-generate-run",
+    "target": "cart.lines.discounts.generate.run",
+    "input": {
+      "cart": {
+        "giftPreview": null,
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/0",
+            "quantity": 4,
+            "cost": {
+              "amountPerQuantity": {
+                "amount": "25.0"
+              },
+              "subtotalAmount": {
+                "amount": "100.0"
+              }
+            },
+            "gift": null,
+            "sellingPlanAllocation": null,
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/10",
+              "product": {
+                "upsellPrice": null
+              }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/1",
+            "quantity": 1,
+            "cost": {
+              "amountPerQuantity": {
+                "amount": "9.0"
+              },
+              "subtotalAmount": {
+                "amount": "9.0"
+              }
+            },
+            "gift": {
+              "value": "tier:1"
+            },
+            "sellingPlanAllocation": null,
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/20",
+              "product": {
+                "upsellPrice": {
+                  "value": "8.00"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "shop": {
+        "localTime": {
+          "date": "2026-10-20"
+        },
+        "giftPromo": {
+          "jsonValue": {
+            "status": "on",
+            "startDate": null,
+            "endDate": "2026-10-19",
+            "tiers": [
+              {
+                "minimum": "60.00",
+                "variantId": "gid://shopify/ProductVariant/20",
+                "quantity": 1
+              },
+              {
+                "minimum": "90.00",
+                "variantId": "gid://shopify/ProductVariant/11",
+                "quantity": 1
+              },
+              {
+                "minimum": "120.00",
+                "variantId": "gid://shopify/ProductVariant/11",
+                "quantity": 2
+              }
+            ],
+            "vip": [
+              {
+                "prefix": "VIP3",
+                "variantId": "gid://shopify/ProductVariant/20",
+                "quantity": 1
+              }
+            ],
+            "codesBlockedMessage": "Codes are paused during our gift promo."
+          }
+        }
+      },
+      "enteredDiscountCodes": [
+        {
+          "code": "SAVE10",
+          "rejectable": true
+        }
+      ],
+      "presentmentCurrencyRate": "1.0",
+      "discount": {
+        "discountClasses": [
+          "PRODUCT"
+        ]
+      }
+    },
+    "output": {
+      "operations": []
+    }
+  }
+}
