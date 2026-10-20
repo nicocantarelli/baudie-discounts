@@ -1,0 +1,49 @@
+{
+  "payload": {
+    "export": "cart-validations-generate-run",
+    "target": "cart.validations.generate.run",
+    "input": {
+      "buyerJourney": {
+        "step": "CHECKOUT_INTERACTION"
+      },
+      "cart": {
+        "lines": [
+          {
+            "gift": {
+              "value": "tier:2"
+            },
+            "cost": {
+              "totalAmount": {
+                "amount": "22.0"
+              }
+            }
+          },
+          {
+            "gift": {
+              "value": "tier:3"
+            },
+            "cost": {
+              "totalAmount": {
+                "amount": "44.0"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "validationAdd": {
+            "errors": [
+              {
+                "message": "Your order includes a free gift that no longer applies. Please go back to your cart to update your order.",
+                "target": "$.cart"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

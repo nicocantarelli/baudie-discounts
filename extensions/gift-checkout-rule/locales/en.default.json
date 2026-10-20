@@ -1,0 +1,4 @@
+{
+  "name": "Gift with purchase check",
+  "description": "Blocks payment when a free gift in the order isn't free anymore (its promo ended or the spend dropped) and asks the customer to go back to their cart."
+}

@@ -1,0 +1,19 @@
+query CartValidationsGenerateRunInput {
+  buyerJourney {
+    step
+  }
+  cart {
+    lines {
+      # Set by the theme on free gift lines: "tier:N" or "vip:<prefix>".
+      gift: attribute(key: "_gift") {
+        value
+      }
+      cost {
+        # After discounts: validation runs once they're applied.
+        totalAmount {
+          amount
+        }
+      }
+    }
+  }
+}

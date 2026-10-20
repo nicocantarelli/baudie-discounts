@@ -1,0 +1,28 @@
+{
+  "payload": {
+    "export": "cart-validations-generate-run",
+    "target": "cart.validations.generate.run",
+    "input": {
+      "buyerJourney": {
+        "step": "CART_INTERACTION"
+      },
+      "cart": {
+        "lines": [
+          {
+            "gift": {
+              "value": "tier:1"
+            },
+            "cost": {
+              "totalAmount": {
+                "amount": "9.0"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "output": {
+      "operations": []
+    }
+  }
+}

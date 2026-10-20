@@ -31,6 +31,7 @@ Settings live in the **`baudie.gift_promo` shop metafield** (JSON), saved by the
 - **No codes during a promo** — every entered code is rejected (`enteredDiscountCodesReject`, Discount Function API 2026-01+) with the panel's message, VIP codes included. Gift cards aren't affected
 - **VIP gifts** are priced by the VIP code itself (a regular Shopify discount code, e.g. from Klaviyo); this function only blocks those codes while a promo runs
 - **Single-function design** — the upsell deal and the gifts share one automatic discount, so they always apply together: there's no "only one automatic discount applies" conflict and no combination settings to keep in sync. Turning the discount off stops both
+- **Checkout rule (`gift-checkout-rule`)** — a backstop for the theme: a gift line must be free at checkout. One that isn't (its promo ended, the spend dropped, the discount is off, its VIP code is gone) blocks payment with a message sending the customer back to their cart, where the theme removes it. That's what catches a checkout reopened later, like an abandoned-checkout email opened after the promo ended. It only checks checkout steps (`buyerJourney.step` = `CHECKOUT_INTERACTION` / `CHECKOUT_COMPLETION`), never cart changes, so the theme's own cart updates always go through, and it covers express payments at checkout too. Validation runs after discounts, so it simply checks each gift line's `totalAmount`. **It has to be turned on once in the admin:** Settings → Checkout → Checkout rules → Add rule → *Gift with purchase check* → turn it on
 
 ### Shared
 
@@ -51,10 +52,14 @@ baudie-discounts/
     │   │   └── *.graphql                  # Function input queries
     │   ├── tests/fixtures/                # One input/output pair per rule
     │   └── shopify.extension.toml
-    └── discount-ui/
-        └── src/
-            ├── DiscountFunctionSettings.jsx   # Admin settings panel
-            └── gift-promo.js              # Load / validate / save the gift settings
+    ├── discount-ui/
+    │   └── src/
+    │       ├── DiscountFunctionSettings.jsx   # Admin settings panel
+    │       └── gift-promo.js              # Load / validate / save the gift settings
+    └── gift-checkout-rule/
+        ├── src/
+        │   └── cart_validations_generate_run.js   # Blocks payment for a gift that isn't free
+        └── tests/fixtures/                # One input/output pair per rule
 ```
 
 ## Development
@@ -64,6 +69,7 @@ npm install
 shopify app dev        # Run against a dev store (functions from a custom app need a Plus store)
 shopify app deploy     # Release a new function version
 cd extensions/discount-function && npx vitest run   # Fixture tests (needs `shopify` on PATH)
+cd extensions/gift-checkout-rule && npx vitest run  # Same for the checkout rule
 ```
 
 ## License

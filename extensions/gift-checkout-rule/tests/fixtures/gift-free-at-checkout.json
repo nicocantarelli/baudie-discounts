@@ -1,0 +1,46 @@
+{
+  "payload": {
+    "export": "cart-validations-generate-run",
+    "target": "cart.validations.generate.run",
+    "input": {
+      "buyerJourney": {
+        "step": "CHECKOUT_COMPLETION"
+      },
+      "cart": {
+        "lines": [
+          {
+            "gift": null,
+            "cost": {
+              "totalAmount": {
+                "amount": "66.0"
+              }
+            }
+          },
+          {
+            "gift": {
+              "value": "tier:1"
+            },
+            "cost": {
+              "totalAmount": {
+                "amount": "0.0"
+              }
+            }
+          },
+          {
+            "gift": {
+              "value": "tier:2"
+            },
+            "cost": {
+              "totalAmount": {
+                "amount": "0.0"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "output": {
+      "operations": []
+    }
+  }
+}
