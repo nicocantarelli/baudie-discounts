@@ -18,7 +18,7 @@ Designed and built by Nicolas Cantarelli.
 The cart-lines run discounts **every upsell product down to its per-product deal price, at any quantity — but only while the cart also contains at least one non-upsell product**. A cart of only upsell products gets no discount, so upsell items keep full price on their own product pages and standalone purchases.
 
 - **`custom.upsell_price` metafield contract** — any product carrying the metafield is an upsell product and the value *is* its deal price. New upsell products need zero code: set the metafield and they're covered, each at its own price
-- **Qualifier rule** — a product *without* the metafield is a qualifier; at least one must be in the cart for the deal to fire (same rule the checkout extension and theme side-cart use for display). Subscription lines of regular products count as qualifiers too
+- **Qualifier rule** — a product *without* the metafield is a qualifier; at least one must be in the cart for the deal to fire (same rule the checkout extension and theme side-cart use for display). Subscription lines of regular products count as qualifiers too; free gift lines never do (wipes plus a free gift is still a cart of only deal products)
 - **No stacking with subscriptions** — a *subscribed* upsell line (one with an Appstle selling plan, e.g. wipes on Subscribe & save) is never discounted: it gets only the subscription price. Upsells added from the cart or checkout are always one-time, so they still get the deal
 - **Free gifts are left to the gift deal** — a gift line is never upsell-discounted, even when the gift is an upsell product (e.g. free wipes)
 

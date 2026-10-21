@@ -77,7 +77,8 @@ export function cartLinesDiscountsGenerateRun(input) {
  * each land at their own price, and any future upsell product is covered just
  * by setting its metafield.
  *
- * Free gift lines are never upsell-discounted: the gift deal makes them free.
+ * Free gift lines are never upsell-discounted (the gift deal makes them free)
+ * and never count as the regular product the deal needs.
  *
  * @param {RunInput} input
  * @returns {ProductDiscountCandidate[]}
@@ -97,11 +98,14 @@ function upsellCandidates(input) {
   };
 
   // The deal only applies when at least one NON-upsell product is in the cart.
+  // A free gift doesn't count: the customer didn't buy it, so wipes plus a
+  // gift is still a cart of only deal products.
   const hasQualifier = lines.some(
     (line) =>
       line.merchandise &&
       line.merchandise.__typename === 'ProductVariant' &&
-      dealPriceOf(line) === null,
+      dealPriceOf(line) === null &&
+      !isGiftLine(line),
   );
   if (!hasQualifier) return [];
 
