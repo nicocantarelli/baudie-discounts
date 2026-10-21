@@ -1,6 +1,6 @@
 {
   "name": "Gift with purchase",
-  "description": "The app's page: gift with purchase settings (promo status and dates, spend tiers, VIP code gifts).",
+  "description": "The app's pages: gift with purchase settings and upsell deals.",
   "gift": {
     "heading": "Gift with purchase",
     "loading": "Loading gift settings",
@@ -54,6 +54,47 @@
       "vipDuplicate": "Two VIP gifts use the same code prefix.",
       "noTiers": "Add at least one gift tier before turning the promo on or previewing it.",
       "dates": "The end date can't be before the start date."
+    }
+  },
+  "nav": {
+    "gifts": "Gift with purchase",
+    "upsell": "Upsell deals"
+  },
+  "upsell": {
+    "heading": "Upsell deals",
+    "loading": "Loading upsell deals",
+    "loadError": "Couldn't load the upsell deals: {{error}}",
+    "howHeading": "How the deal works",
+    "howDeal": "Each product below drops to its deal price in the cart, at any quantity.",
+    "howQualifier": "The deal only applies when the cart also has a regular product (one that's not on this list). A cart of only deal products pays full price.",
+    "howExceptions": "A deal product on a subscription gets the subscription price instead, never both. Free gifts are never charged.",
+    "howWhere": "The cart drawer's \"Complete your order\" offers and the checkout's \"Stay fresh\" block show these deal prices. Which products they suggest is set in the theme editor (Cart drawer → Upsell) and the checkout editor.",
+    "discountHeading": "Discount",
+    "discountHelp": "This discount runs both the upsell deal and the gift with purchase promos. Turning it off stops both.",
+    "openDiscount": "Open discount",
+    "noDiscount": "No active discount runs these deals. Create an automatic discount with this app's function (Discounts → Create discount) for the deal prices to apply.",
+    "status": {
+      "ACTIVE": "Active",
+      "EXPIRED": "Expired",
+      "SCHEDULED": "Scheduled"
+    },
+    "productsHeading": "Products on the deal",
+    "productsHelp": "The deal price is what the customer pays per unit while the deal applies. It must be lower than the product's regular price.",
+    "empty": "No products are on the deal yet.",
+    "regularPrice": "Regular price {{price}}",
+    "notActive": "Not active",
+    "remove": "Take {{title}} off the deal",
+    "dealPrice": "Deal price",
+    "saves": "Customers save {{amount}} ({{percent}}%)",
+    "addProducts": "Add products",
+    "save": "Save",
+    "saved": "Upsell deals saved. The store uses the new prices right away.",
+    "savedToast": "Upsell deals saved",
+    "saveError": "Couldn't save the upsell deals: {{error}}",
+    "unsaved": "Unsaved changes",
+    "errors": {
+      "dealPrice": "Each product needs a deal price above $0.",
+      "dealNotLower": "A deal price must be lower than the product's regular price."
     }
   }
 }

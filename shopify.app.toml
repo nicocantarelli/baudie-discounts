@@ -14,8 +14,9 @@ api_version = "2026-07"
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 # write_discounts: create/manage the automatic discount that runs the function.
-# read_products: let the function read each product's custom.upsell_price metafield.
-scopes = "write_discounts,read_products"
+# write_products: the Upsell deals page edits each product's custom.upsell_price
+# metafield (the function reads it).
+scopes = "write_discounts,write_products"
 
 [auth]
 redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]

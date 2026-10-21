@@ -36,7 +36,9 @@ Settings live in the **`baudie.gift_promo` shop metafield** (JSON), saved by the
 ### Shared
 
 - **Delivery target is an intentional no-op** — the function can never emit a shipping discount regardless of which discount classes get enabled on the discount node
-- **`gift-settings`** — the app's own page (Apps → **Baudie Gifts & Deals** in the admin sidebar), an App Home UI extension (`admin.app.home.render`) that Shopify hosts, so there's still no server. It holds the gift with purchase settings (status, dates, up to 3 spend tiers, up to 3 VIP code gifts, blocked-code message) and writes the shop metafield through `shopify.query` with the app's existing scopes. App Home UI extensions are for custom-distribution apps only, which this is.
+- **`gift-settings`** — the app's own pages (Apps → **Baudie Gifts & Deals** in the admin sidebar, with *Gift with purchase* and *Upsell deals* listed under it via `s-app-nav`), an App Home UI extension (`admin.app.home.render`) that Shopify hosts, so there's still no server. App Home UI extensions are for custom-distribution apps only, which this is. Routing is preact-iso.
+  - *Gift with purchase* (home, `/gifts`): status, dates, up to 3 spend tiers, up to 3 VIP code gifts, blocked-code message; writes the `baudie.gift_promo` shop metafield through `shopify.query`.
+  - *Upsell deals* (`/upsell-deals`): the products on the deal with their regular and deal prices; edit a deal price, add products with the product picker, take one off the deal. Writes or deletes each product's `custom.upsell_price` metafield (`write_products`), which the function, the cart drawer and the checkout upsell all read. Also shows the discount that runs the deal, with a link to it.
 - **`discount-ui`** — the admin UI extension on the Upsell deal discount's page: explains the upsell deal, keeps the Product class on, and links to the gift settings page.
 
 ## Structure
@@ -58,8 +60,11 @@ baudie-discounts/
     │       └── DiscountFunctionSettings.jsx   # Upsell deal panel on the discount's page
     ├── gift-settings/
     │   └── src/
-    │       ├── AppHome.jsx                # The app's page: gift with purchase settings
-    │       └── gift-promo.js              # Load / validate / save the gift settings
+    │       ├── AppHome.jsx                # The app's pages: sidebar links + routes
+    │       ├── GiftPage.jsx               # Gift with purchase settings
+    │       ├── gift-promo.js              # Load / validate / save the gift settings
+    │       ├── UpsellPage.jsx             # Upsell deals: products and deal prices
+    │       └── upsell-deals.js            # Load / validate / save the deal prices
     └── gift-checkout-rule/
         ├── src/
         │   └── cart_validations_generate_run.js   # Blocks payment for a gift that isn't free
