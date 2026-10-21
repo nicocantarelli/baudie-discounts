@@ -9,13 +9,17 @@ import {
 
 // Upsell deals page (Apps → Baudie Gifts & Deals → Upsell deals): the
 // products on the deal and their deal prices (the `custom.upsell_price`
-// metafield on each product), plus the discount that runs the deal.
+// metafield on each product), which of them the cart drawer and checkout offer
+// (the `baudie.upsell_offers` shop metafield), plus the discount that runs the deal.
 export default function UpsellPage() {
   const { i18n } = shopify;
   const t = (key, replacements) => i18n.translate(`upsell.${key}`, replacements);
 
   const [loaded, setLoaded] = useState(false);
   const [discount, setDiscount] = useState(null);
+  const [bundles, setBundles] = useState({});
+  const [shopId, setShopId] = useState(null);
+  const [offersStale, setOffersStale] = useState(false);
   const [saved, setSaved] = useState([]);
   const [rows, setRows] = useState([]);
   const [loadError, setLoadError] = useState(null);
@@ -24,16 +28,19 @@ export default function UpsellPage() {
 
   useEffect(() => {
     loadUpsellDeals()
-      .then(({ rows, discount }) => {
+      .then(({ rows, discount, bundles, shopId, offersStale }) => {
         setSaved(rows);
         setRows(rows);
         setDiscount(discount);
+        setBundles(bundles);
+        setShopId(shopId);
+        setOffersStale(offersStale);
         setLoaded(true);
       })
       .catch((error) => setLoadError(error.message));
   }, []);
 
-  const dirty = JSON.stringify(rows) !== JSON.stringify(saved);
+  const dirty = offersStale || JSON.stringify(rows) !== JSON.stringify(saved);
 
   const save = async () => {
     if (!dirty || saving) return;
@@ -44,8 +51,9 @@ export default function UpsellPage() {
     }
     setSaving(true);
     try {
-      await saveUpsellDeals(rows, saved);
+      await saveUpsellDeals(rows, saved, bundles, shopId);
       setSaved(rows);
+      setOffersStale(false);
       setNotice({ tone: "success", text: t("saved") });
       shopify.toast?.show(t("savedToast"));
     } catch (error) {
@@ -110,6 +118,8 @@ export default function UpsellPage() {
           <s-paragraph>{t("howWhere")}</s-paragraph>
         </s-stack>
       </s-section>
+
+      {offersStale && !notice ? <s-banner tone="info">{t("offersStale")}</s-banner> : null}
 
       {notice ? (
         <s-banner tone={notice.tone} dismissible onDismiss={() => setNotice(null)}>
@@ -185,6 +195,18 @@ export default function UpsellPage() {
                         : ""}
                     </s-text>
                   </s-grid>
+                  <s-stack gap="small-200">
+                    <s-checkbox
+                      label={t("offered")}
+                      checked={row.offered}
+                      onChange={(event) => updateRow(index, { offered: event.currentTarget.checked })}
+                    />
+                    {row.offered && bundles[row.productId]?.length ? (
+                      <s-text color="subdued">
+                        {t("includedIn", { bundles: bundles[row.productId].map((bundle) => bundle.title).join(", ") })}
+                      </s-text>
+                    ) : null}
+                  </s-stack>
                 </s-stack>
               </s-box>
             );

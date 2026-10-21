@@ -68,7 +68,7 @@
     "howDeal": "Each product below drops to its deal price in the cart, at any quantity.",
     "howQualifier": "The deal only applies when the cart also has a regular product (one that's not on this list). A cart of only deal products pays full price.",
     "howExceptions": "A deal product on a subscription gets the subscription price instead, never both. Free gifts are never charged.",
-    "howWhere": "The cart drawer's \"Complete your order\" offers and the checkout's \"Stay fresh\" block show these deal prices. Which products they suggest is set in the theme editor (Cart drawer → Upsell) and the checkout editor.",
+    "howWhere": "The cart drawer and the checkout suggest the products marked \"Offer in the cart and checkout\", at their deal prices, whenever the cart has a regular product and not the product already.",
     "discountHeading": "Discount",
     "discountHelp": "This discount runs both the upsell deal and the gift with purchase promos. Turning it off stops both.",
     "openDiscount": "Open discount",
@@ -85,6 +85,8 @@
     "notActive": "Not active",
     "remove": "Take {{title}} off the deal",
     "dealPrice": "Deal price",
+    "offered": "Offer in the cart and checkout",
+    "includedIn": "Not offered when the cart has {{bundles}}, which already includes it.",
     "saves": "Customers save {{amount}} ({{percent}}%)",
     "addProducts": "Add products",
     "save": "Save",
@@ -92,6 +94,7 @@
     "savedToast": "Upsell deals saved",
     "saveError": "Couldn't save the upsell deals: {{error}}",
     "unsaved": "Unsaved changes",
+    "offersStale": "Save to update the offers in the cart drawer and checkout.",
     "errors": {
       "dealPrice": "Each product needs a deal price above $0.",
       "dealNotLower": "A deal price must be lower than the product's regular price."
