@@ -1,4 +1,5 @@
-// Gift with purchase settings: load, validate and save.
+// Gift with purchase settings: load, validate and save, for the app's own
+// page (./AppHome.jsx).
 //
 // The settings live in ONE shop metafield, `baudie.gift_promo` (JSON). Both
 // sides read it: the discount function (to make gifts free and block codes at
@@ -14,15 +15,11 @@ const KEY = 'gift_promo';
 
 /** @returns {Promise<any>} */
 async function adminGraphql(query, variables = {}) {
-  const response = await fetch('shopify:admin/api/graphql.json', {
-    method: 'POST',
-    body: JSON.stringify({ query, variables }),
-  });
-  const json = await response.json();
-  if (json.errors?.length) {
-    throw new Error(json.errors.map((error) => error.message).join(' '));
+  const result = await shopify.query(query, { variables });
+  if (result.errors?.length) {
+    throw new Error(result.errors.map((error) => error.message).join(' '));
   }
-  return json.data;
+  return result.data;
 }
 
 export const EMPTY_PROMO = {

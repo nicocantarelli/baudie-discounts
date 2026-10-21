@@ -1,0 +1,16 @@
+api_version = "2026-07"
+
+[[extensions]]
+# Change the merchant-facing name of the extension in locales/en.default.json
+name = "t:name"
+description = "t:description"
+handle = "gift-settings"
+uid = "80820eee-d1be-5667-68a3-5efa2e4a1b72ae5c7e7c"
+type = "ui_extension"
+
+# The app's own page (Apps → Baudie Gifts & Deals): the gift with purchase
+# settings, hosted by Shopify, so Alex doesn't have to find the Upsell deal
+# discount to change them.
+[[extensions.targeting]]
+module = "./src/AppHome.jsx"
+target = "admin.app.home.render"

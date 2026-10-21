@@ -36,7 +36,8 @@ Settings live in the **`baudie.gift_promo` shop metafield** (JSON), saved by the
 ### Shared
 
 - **Delivery target is an intentional no-op** — the function can never emit a shipping discount regardless of which discount classes get enabled on the discount node
-- **`discount-ui`** — the admin UI extension on the discount's page: explains the upsell deal, keeps the Product class on, and holds the gift with purchase settings (status, dates, up to 3 spend tiers, up to 3 VIP code gifts, blocked-code message). It writes the shop metafield through the Admin API with the app's existing scopes, on its own Save button and on the discount's Save.
+- **`gift-settings`** — the app's own page (Apps → **Baudie Gifts & Deals** in the admin sidebar), an App Home UI extension (`admin.app.home.render`) that Shopify hosts, so there's still no server. It holds the gift with purchase settings (status, dates, up to 3 spend tiers, up to 3 VIP code gifts, blocked-code message) and writes the shop metafield through `shopify.query` with the app's existing scopes. App Home UI extensions are for custom-distribution apps only, which this is.
+- **`discount-ui`** — the admin UI extension on the Upsell deal discount's page: explains the upsell deal, keeps the Product class on, and links to the gift settings page.
 
 ## Structure
 
@@ -54,7 +55,10 @@ baudie-discounts/
     │   └── shopify.extension.toml
     ├── discount-ui/
     │   └── src/
-    │       ├── DiscountFunctionSettings.jsx   # Admin settings panel
+    │       └── DiscountFunctionSettings.jsx   # Upsell deal panel on the discount's page
+    ├── gift-settings/
+    │   └── src/
+    │       ├── AppHome.jsx                # The app's page: gift with purchase settings
     │       └── gift-promo.js              # Load / validate / save the gift settings
     └── gift-checkout-rule/
         ├── src/
