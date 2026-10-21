@@ -71,6 +71,10 @@ baudie-discounts/
         └── tests/fixtures/                # One input/output pair per rule
 ```
 
+## App icon
+
+`app-icon/` holds the app's icon at 1200×1200 (Baudie's favicon rebuilt from the logo's "B" on the favicon pink, #FCE9EC): a circle on a transparent background and a full square. Shopify doesn't take an app icon from the app config, so it's uploaded in the Dev Dashboard (the app → Settings → App icon).
+
 ## Development
 
 ```bash
