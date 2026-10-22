@@ -22,10 +22,12 @@ function App() {
   const discountClasses = discounts?.discountClasses?.value ?? [];
   const productEnabled = discountClasses.includes("product");
 
-  // Foolproof: turn the Product class on by default if it isn't already, so the
-  // merchant can't accidentally save a discount that does nothing.
+  // Foolproof: the discount is always exactly the Product class. Without it the
+  // discount does nothing; with Order or Shipping on as well, Shopify treats it
+  // as an order discount too, so a code that doesn't combine with order
+  // discounts (e.g. Klaviyo's VIP gift codes) knocks the upsell deal off.
   useEffect(() => {
-    if (!productEnabled) {
+    if (discountClasses.length !== 1 || !productEnabled) {
       Promise.resolve(discounts?.updateDiscountClasses?.(["product"])).catch(
         () => {},
       );
