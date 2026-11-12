@@ -19,6 +19,7 @@ export default function UpsellPage() {
   const [discount, setDiscount] = useState(null);
   const [bundles, setBundles] = useState({});
   const [shopId, setShopId] = useState(null);
+  const [shopCurrency, setShopCurrency] = useState(null);
   const [offersStale, setOffersStale] = useState(false);
   const [saved, setSaved] = useState([]);
   const [rows, setRows] = useState([]);
@@ -28,12 +29,13 @@ export default function UpsellPage() {
 
   useEffect(() => {
     loadUpsellDeals()
-      .then(({ rows, discount, bundles, shopId, offersStale }) => {
+      .then(({ rows, discount, bundles, shopId, shopCurrency, offersStale }) => {
         setSaved(rows);
         setRows(rows);
         setDiscount(discount);
         setBundles(bundles);
         setShopId(shopId);
+        setShopCurrency(shopCurrency);
         setOffersStale(offersStale);
         setLoaded(true);
       })
@@ -51,7 +53,7 @@ export default function UpsellPage() {
     }
     setSaving(true);
     try {
-      await saveUpsellDeals(rows, saved, bundles, shopId);
+      await saveUpsellDeals(rows, saved, bundles, shopId, shopCurrency);
       setSaved(rows);
       setOffersStale(false);
       setNotice({ tone: "success", text: t("saved") });
@@ -116,6 +118,7 @@ export default function UpsellPage() {
           <s-paragraph>{t("howQualifier")}</s-paragraph>
           <s-paragraph>{t("howExceptions")}</s-paragraph>
           <s-paragraph>{t("howWhere")}</s-paragraph>
+          <s-paragraph>{t("howCurrencies")}</s-paragraph>
         </s-stack>
       </s-section>
 

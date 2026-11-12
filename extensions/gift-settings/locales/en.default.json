@@ -69,6 +69,7 @@
     "howQualifier": "The deal only applies when the cart also has a regular product (one that's not on this list). A cart of only deal products pays full price.",
     "howExceptions": "A deal product on a subscription gets the subscription price instead, never both. Free gifts are never charged.",
     "howWhere": "The cart drawer and the checkout suggest the products marked \"Offer in the cart and checkout\", at their deal prices, whenever the cart has a regular product and not the product already.",
+    "howCurrencies": "Deal prices are in your store's currency. In other currencies a product gets the same discount off its price in that market, so it follows your market prices and rounding: a $10 product with an $8 deal costs 80% of its Canadian price in Canada. Save this page after changing a deal product's price so other currencies follow.",
     "discountHeading": "Discount",
     "discountHelp": "This discount runs both the upsell deal and the gift with purchase promos. Turning it off stops both.",
     "openDiscount": "Open discount",
@@ -94,7 +95,7 @@
     "savedToast": "Upsell deals saved",
     "saveError": "Couldn't save the upsell deals: {{error}}",
     "unsaved": "Unsaved changes",
-    "offersStale": "Save to update the offers in the cart drawer and checkout.",
+    "offersStale": "Save to update the offers and the deal prices in other currencies in the cart drawer and checkout.",
     "errors": {
       "dealPrice": "Each product needs a deal price above $0.",
       "dealNotLower": "A deal price must be lower than the product's regular price."

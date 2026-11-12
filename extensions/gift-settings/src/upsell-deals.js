@@ -8,11 +8,21 @@
 // Which deal products the cart drawer and the checkout suggest is the
 // `baudie.upsell_offers` shop metafield (JSON), also saved here:
 //   { offers: [{ productId, productHandle, variantId, containedIn: [productId] }],
-//     dealProductIds: [productId] }
+//     dealProductIds: [productId],
+//     shopCurrency: "USD",
+//     basePrices: { [variantId]: "10.00" } }
 // `containedIn` lists the bundles that already include the product (their
 // `custom.bundle_companion`), so the drawer doesn't offer it again;
 // `dealProductIds` lets the drawer hide its offers when the cart holds only
 // deal products, which the deal wouldn't apply to.
+//
+// The deal price is in the shop's currency. In another currency, the discount
+// function, the drawer and the checkout all land a deal product at the same
+// share of the price Shopify charges for it in that market (price lists,
+// rounding): market price × deal price ÷ `basePrices[variant]`, the variant's
+// shop-currency price. Until the prices are saved here (no `shopCurrency`), all
+// three keep the deal price as saved in every currency, so saving the page
+// switches them over together.
 
 const NAMESPACE = 'custom';
 const KEY = 'upsell_price';
@@ -30,6 +40,13 @@ async function adminGraphql(query, variables = {}) {
 
 const money = (value) => (value === null || value === undefined || value === '' ? '' : String(parseFloat(value)));
 
+// Each variant's shop-currency price, for `basePrices`.
+function variantPrices(variants) {
+  return (variants ?? [])
+    .filter((variant) => variant?.id && variant.price != null && variant.price !== '')
+    .map((variant) => ({ id: variant.id, price: parseFloat(variant.price).toFixed(2) }));
+}
+
 function rowFromProduct(product, offered) {
   return {
     productId: product.id,
@@ -39,6 +56,7 @@ function rowFromProduct(product, offered) {
     status: product.status,
     image: product.featuredMedia?.preview?.image?.url ?? null,
     price: product.variants?.nodes?.[0]?.price ?? null,
+    variantPrices: variantPrices(product.variants?.nodes),
     dealPrice: money(product.upsellPrice?.value),
     offered,
   };
@@ -69,8 +87,16 @@ function canonical(value) {
   return JSON.stringify(value ?? null);
 }
 
-/** The shop metafield value for these rows: what the drawer and checkout offer. */
-export function buildUpsellOffers(rows, bundles) {
+/**
+ * The shop metafield value for these rows: what the drawer and checkout offer,
+ * and every deal variant's shop-currency price for the deal in other currencies.
+ */
+export function buildUpsellOffers(rows, bundles, shopCurrency) {
+  /** @type {Record<string, string>} */
+  const basePrices = {};
+  for (const row of rows) {
+    for (const variant of row.variantPrices ?? []) basePrices[variant.id] = variant.price;
+  }
   return {
     offers: rows
       .filter((row) => row.offered)
@@ -81,6 +107,8 @@ export function buildUpsellOffers(rows, bundles) {
         containedIn: (bundles[row.productId] ?? []).map((bundle) => bundle.id),
       })),
     dealProductIds: rows.map((row) => row.productId),
+    shopCurrency,
+    basePrices,
   };
 }
 
@@ -94,9 +122,11 @@ export async function loadUpsellDeals() {
     query UpsellOffers {
       shop {
         id
+        currencyCode
         offers: metafield(namespace: "${OFFERS_NAMESPACE}", key: "${OFFERS_KEY}") { jsonValue }
       }
     }`);
+  const shopCurrency = shopData.shop.currencyCode;
   const savedOffers = shopData.shop.offers?.jsonValue ?? null;
   // Before offers are first saved, every deal product is offered.
   const offeredIds = savedOffers ? (savedOffers.offers ?? []).map((offer) => offer.productId) : null;
@@ -115,7 +145,7 @@ export async function loadUpsellDeals() {
             title
             status
             featuredMedia { preview { image { url } } }
-            variants(first: 1) { nodes { id price } }
+            variants(first: 100) { nodes { id price } }
             upsellPrice: metafield(namespace: "${NAMESPACE}", key: "${KEY}") { value }
             companion: metafield(namespace: "custom", key: "bundle_companion") { value }
           }
@@ -141,8 +171,10 @@ export async function loadUpsellDeals() {
   }
 
   // The offers need saving when none are saved yet, or when the saved ones no
-  // longer match the products (a bundle or a handle changed since).
-  const offersStale = !savedOffers || canonical(savedOffers) !== canonical(buildUpsellOffers(rows, bundles));
+  // longer match the products (a bundle, a handle or a variant's price changed
+  // since, or the prices were never saved).
+  const offersStale =
+    !savedOffers || canonical(savedOffers) !== canonical(buildUpsellOffers(rows, bundles, shopCurrency));
 
   // The automatic discount that runs this app's function (the Upsell deal).
   const discounts = await adminGraphql(`#graphql
@@ -176,7 +208,7 @@ export async function loadUpsellDeals() {
       }
     : null;
 
-  return { rows, discount, bundles, shopId: shopData.shop.id, offersStale };
+  return { rows, discount, bundles, shopId: shopData.shop.id, shopCurrency, offersStale };
 }
 
 /** Opens the product picker for products to add, returns rows (no deal price yet). */
@@ -196,6 +228,7 @@ export async function pickUpsellProducts(existingIds) {
       status: product.status,
       image: product.images?.[0]?.originalSrc ?? null,
       price: product.variants?.[0]?.price ?? null,
+      variantPrices: variantPrices(product.variants),
       dealPrice: '',
       offered: true,
     }));
@@ -215,7 +248,7 @@ export function validateUpsellDeals(rows) {
  * Saves the deal prices that changed or were added and the offers for the
  * drawer and checkout, and removes the deal from products taken off the list.
  */
-export async function saveUpsellDeals(rows, savedRows, bundles, shopId) {
+export async function saveUpsellDeals(rows, savedRows, bundles, shopId, shopCurrency) {
   const savedById = new Map(savedRows.map((row) => [row.productId, row]));
   const changed = rows.filter((row) => {
     const before = savedById.get(row.productId);
@@ -242,7 +275,7 @@ export async function saveUpsellDeals(rows, savedRows, bundles, shopId) {
       namespace: OFFERS_NAMESPACE,
       key: OFFERS_KEY,
       type: 'json',
-      value: JSON.stringify(buildUpsellOffers(rows, bundles)),
+      value: JSON.stringify(buildUpsellOffers(rows, bundles, shopCurrency)),
     },
   ]);
 
