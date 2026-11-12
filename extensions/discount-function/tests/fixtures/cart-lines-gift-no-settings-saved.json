@@ -11,7 +11,8 @@
             "quantity": 4,
             "cost": {
               "amountPerQuantity": {
-                "amount": "25.0"
+                "amount": "25.0",
+                "currencyCode": "USD"
               },
               "subtotalAmount": {
                 "amount": "100.0"
@@ -32,7 +33,8 @@
             "quantity": 1,
             "cost": {
               "amountPerQuantity": {
-                "amount": "9.0"
+                "amount": "9.0",
+                "currencyCode": "USD"
               },
               "subtotalAmount": {
                 "amount": "9.0"
@@ -57,7 +59,8 @@
             "quantity": 1,
             "cost": {
               "amountPerQuantity": {
-                "amount": "9.0"
+                "amount": "9.0",
+                "currencyCode": "USD"
               },
               "subtotalAmount": {
                 "amount": "9.0"
@@ -81,7 +84,8 @@
         "localTime": {
           "date": "2026-10-20"
         },
-        "giftPromo": null
+        "giftPromo": null,
+        "upsellOffers": null
       },
       "enteredDiscountCodes": [
         {

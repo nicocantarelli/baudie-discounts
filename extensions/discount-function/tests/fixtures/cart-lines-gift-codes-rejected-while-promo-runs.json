@@ -11,7 +11,8 @@
             "quantity": 1,
             "cost": {
               "amountPerQuantity": {
-                "amount": "22.0"
+                "amount": "22.0",
+                "currencyCode": "USD"
               },
               "subtotalAmount": {
                 "amount": "22.0"
@@ -64,7 +65,8 @@
             ],
             "codesBlockedMessage": "Codes are paused during our gift promo."
           }
-        }
+        },
+        "upsellOffers": null
       },
       "enteredDiscountCodes": [
         {

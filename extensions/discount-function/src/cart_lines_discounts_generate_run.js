@@ -9,6 +9,12 @@ import {
   giftPromoSettings,
   isGiftLine,
 } from './gift_with_purchase';
+import {
+  dealIsInShopCurrency,
+  localDealCents,
+  toCents,
+  upsellPricing,
+} from './upsell_price';
 
 /**
  * @typedef {import("../generated/api").CartInput} RunInput
@@ -80,12 +86,17 @@ export function cartLinesDiscountsGenerateRun(input) {
  * Free gift lines are never upsell-discounted (the gift deal makes them free)
  * and never count as the regular product the deal needs.
  *
+ * The metafield's deal price is in the shop's currency. In another currency
+ * the line lands at the same share of its market price instead (see
+ * ./upsell_price.js), which is what the cart drawer and checkout show there.
+ *
  * @param {RunInput} input
  * @returns {ProductDiscountCandidate[]}
  */
 function upsellCandidates(input) {
   const lines = input.cart.lines;
   if (!lines.length) return [];
+  const pricing = upsellPricing(input.shop.upsellOffers?.jsonValue);
 
   // The deal (target) price for a line, or null if it isn't an upsell product.
   const dealPriceOf = (line) => {
@@ -124,16 +135,27 @@ function upsellCandidates(input) {
     if (line.sellingPlanAllocation) continue;
 
     const unit = parseFloat(line.cost.amountPerQuantity.amount);
-    if (!(unit > deal)) continue; // already at or below the deal price
+    let amountOff;
+    if (dealIsInShopCurrency(pricing, line.cost.amountPerQuantity.currencyCode)) {
+      if (!(unit > deal)) continue; // already at or below the deal price
+      amountOff = (unit - deal).toFixed(2);
+    } else {
+      // Another currency: the market price (price lists, rounding) is the
+      // line's own price, and the deal keeps its share of it.
+      const unitCents = toCents(unit);
+      const dealCents = localDealCents(unitCents, deal, pricing.basePrices[line.merchandise.id]);
+      if (dealCents === null || !(unitCents > dealCents)) continue;
+      amountOff = ((unitCents - dealCents) / 100).toFixed(2);
+    }
 
     candidates.push({
       message: 'Upsell deal',
       targets: [{ cartLine: { id: line.id } }],
       value: {
         fixedAmount: {
-          // Per-item amount off, so every unit lands exactly at the deal price
-          // regardless of quantity.
-          amount: (unit - deal).toFixed(2),
+          // Per-item amount off, in the cart's currency, so every unit lands
+          // exactly at the deal price regardless of quantity.
+          amount: amountOff,
           appliesToEachItem: true,
         },
       },

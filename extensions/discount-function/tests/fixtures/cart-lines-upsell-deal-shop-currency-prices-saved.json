@@ -1,0 +1,119 @@
+{
+  "payload": {
+    "export": "cart-lines-discounts-generate-run",
+    "target": "cart.lines.discounts.generate.run",
+    "input": {
+      "cart": {
+        "giftPreview": null,
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/0",
+            "quantity": 1,
+            "cost": {
+              "amountPerQuantity": {
+                "amount": "22.0",
+                "currencyCode": "USD"
+              },
+              "subtotalAmount": {
+                "amount": "22.00"
+              }
+            },
+            "gift": null,
+            "sellingPlanAllocation": null,
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/10",
+              "product": {
+                "upsellPrice": null
+              }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/1",
+            "quantity": 1,
+            "cost": {
+              "amountPerQuantity": {
+                "amount": "9.0",
+                "currencyCode": "USD"
+              },
+              "subtotalAmount": {
+                "amount": "9.00"
+              }
+            },
+            "gift": null,
+            "sellingPlanAllocation": null,
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/20",
+              "product": {
+                "upsellPrice": {
+                  "value": "8.00"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "shop": {
+        "localTime": {
+          "date": "2026-11-20"
+        },
+        "giftPromo": null,
+        "upsellOffers": {
+          "jsonValue": {
+            "offers": [
+              {
+                "productId": "gid://shopify/Product/2",
+                "productHandle": "wipes",
+                "variantId": "gid://shopify/ProductVariant/20",
+                "containedIn": []
+              }
+            ],
+            "dealProductIds": [
+              "gid://shopify/Product/2",
+              "gid://shopify/Product/3"
+            ],
+            "shopCurrency": "USD",
+            "basePrices": {
+              "gid://shopify/ProductVariant/20": "10.00"
+            }
+          }
+        }
+      },
+      "enteredDiscountCodes": [],
+      "presentmentCurrencyRate": "1.0",
+      "discount": {
+        "discountClasses": [
+          "PRODUCT"
+        ]
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "productDiscountsAdd": {
+            "selectionStrategy": "ALL",
+            "candidates": [
+              {
+                "message": "Upsell deal",
+                "targets": [
+                  {
+                    "cartLine": {
+                      "id": "gid://shopify/CartLine/1"
+                    }
+                  }
+                ],
+                "value": {
+                  "fixedAmount": {
+                    "amount": "1.00",
+                    "appliesToEachItem": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "payload": {
+    "export": "cart-lines-discounts-generate-run",
+    "target": "cart.lines.discounts.generate.run",
+    "input": {
+      "cart": {
+        "giftPreview": null,
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/0",
+            "quantity": 1,
+            "cost": {
+              "amountPerQuantity": {
+                "amount": "31.35",
+                "currencyCode": "CAD"
+              },
+              "subtotalAmount": {
+                "amount": "31.35"
+              }
+            },
+            "gift": null,
+            "sellingPlanAllocation": null,
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/10",
+              "product": {
+                "upsellPrice": null
+              }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/1",
+            "quantity": 1,
+            "cost": {
+              "amountPerQuantity": {
+                "amount": "14.25",
+                "currencyCode": "CAD"
+              },
+              "subtotalAmount": {
+                "amount": "14.25"
+              }
+            },
+            "gift": null,
+            "sellingPlanAllocation": null,
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/20",
+              "product": {
+                "upsellPrice": {
+                  "value": "8.00"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "shop": {
+        "localTime": {
+          "date": "2026-11-20"
+        },
+        "giftPromo": null,
+        "upsellOffers": {
+          "jsonValue": {
+            "offers": [
+              {
+                "productId": "gid://shopify/Product/2",
+                "productHandle": "wipes",
+                "variantId": "gid://shopify/ProductVariant/20",
+                "containedIn": []
+              }
+            ],
+            "dealProductIds": [
+              "gid://shopify/Product/2",
+              "gid://shopify/Product/3"
+            ],
+            "shopCurrency": "USD",
+            "basePrices": {
+              "gid://shopify/ProductVariant/30": "24.00"
+            }
+          }
+        }
+      },
+      "enteredDiscountCodes": [],
+      "presentmentCurrencyRate": "1.425",
+      "discount": {
+        "discountClasses": [
+          "PRODUCT"
+        ]
+      }
+    },
+    "output": {
+      "operations": []
+    }
+  }
+}

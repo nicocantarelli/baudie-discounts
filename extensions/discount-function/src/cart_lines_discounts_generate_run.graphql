@@ -9,8 +9,11 @@ query CartInput {
       id
       quantity
       cost {
+        # In the cart's (presentment) currency: the price Shopify charges in
+        # the customer's market, after price lists and rounding.
         amountPerQuantity {
           amount
+          currencyCode
         }
         subtotalAmount {
           amount
@@ -53,6 +56,12 @@ query CartInput {
     # (extensions/discount-ui). The theme reads the same metafield, so the cart
     # drawer and checkout always agree on the promo.
     giftPromo: metafield(namespace: "baudie", key: "gift_promo") {
+      jsonValue
+    }
+    # The upsell offers, saved by the Upsell deals page. Its `shopCurrency` and
+    # `basePrices` (each deal variant's shop-currency price) set the deal price
+    # in other currencies; the cart drawer and checkout read the same metafield.
+    upsellOffers: metafield(namespace: "baudie", key: "upsell_offers") {
       jsonValue
     }
   }
