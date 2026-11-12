@@ -1,0 +1,160 @@
+{
+  "payload": {
+    "export": "cart-lines-discounts-generate-run",
+    "target": "cart.lines.discounts.generate.run",
+    "input": {
+      "cart": {
+        "giftPreview": null,
+        "lines": [
+          {
+            "id": "gid://shopify/CartLine/0",
+            "quantity": 1,
+            "cost": {
+              "amountPerQuantity": {
+                "amount": "113500.0",
+                "currencyCode": "JPY"
+              },
+              "subtotalAmount": {
+                "amount": "113500.0"
+              }
+            },
+            "gift": null,
+            "sellingPlanAllocation": null,
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/10",
+              "product": {
+                "upsellPrice": null
+              }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/1",
+            "quantity": 2,
+            "cost": {
+              "amountPerQuantity": {
+                "amount": "3900.0",
+                "currencyCode": "JPY"
+              },
+              "subtotalAmount": {
+                "amount": "7800.0"
+              }
+            },
+            "gift": null,
+            "sellingPlanAllocation": null,
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/20",
+              "product": {
+                "upsellPrice": {
+                  "value": "19.00"
+                }
+              }
+            }
+          },
+          {
+            "id": "gid://shopify/CartLine/2",
+            "quantity": 1,
+            "cost": {
+              "amountPerQuantity": {
+                "amount": "1583.0",
+                "currencyCode": "JPY"
+              },
+              "subtotalAmount": {
+                "amount": "1583.0"
+              }
+            },
+            "gift": null,
+            "sellingPlanAllocation": null,
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/30",
+              "product": {
+                "upsellPrice": {
+                  "value": "8.00"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "shop": {
+        "localTime": {
+          "date": "2026-11-20"
+        },
+        "giftPromo": null,
+        "upsellOffers": {
+          "jsonValue": {
+            "offers": [
+              {
+                "productId": "gid://shopify/Product/2",
+                "productHandle": "wipes",
+                "variantId": "gid://shopify/ProductVariant/20",
+                "containedIn": []
+              }
+            ],
+            "dealProductIds": [
+              "gid://shopify/Product/2",
+              "gid://shopify/Product/3"
+            ],
+            "shopCurrency": "USD",
+            "basePrices": {
+              "gid://shopify/ProductVariant/20": "24.00",
+              "gid://shopify/ProductVariant/30": "10.00"
+            }
+          }
+        }
+      },
+      "enteredDiscountCodes": [],
+      "presentmentCurrencyRate": "162.07",
+      "discount": {
+        "discountClasses": [
+          "PRODUCT"
+        ]
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "productDiscountsAdd": {
+            "selectionStrategy": "ALL",
+            "candidates": [
+              {
+                "message": "Upsell deal",
+                "targets": [
+                  {
+                    "cartLine": {
+                      "id": "gid://shopify/CartLine/1"
+                    }
+                  }
+                ],
+                "value": {
+                  "fixedAmount": {
+                    "amount": "812.00",
+                    "appliesToEachItem": true
+                  }
+                }
+              },
+              {
+                "message": "Upsell deal",
+                "targets": [
+                  {
+                    "cartLine": {
+                      "id": "gid://shopify/CartLine/2"
+                    }
+                  }
+                ],
+                "value": {
+                  "fixedAmount": {
+                    "amount": "317.00",
+                    "appliesToEachItem": true
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

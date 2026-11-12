@@ -53,6 +53,33 @@ export function toCents(amount) {
 }
 
 /**
+ * Currencies priced in whole units, with no cents: ISO 4217's zero-decimal
+ * currencies plus the ones browsers format without decimals. Shopify charges
+ * these in whole units (a ¥812.50 discount becomes ¥813) and checkout shows
+ * them rounded, so a deal with a fraction of a unit would show one price and
+ * charge another. Rounding to a whole unit in a currency that does have cents
+ * is still exact everywhere, so the list errs on the side of including one.
+ * The checkout upsell and the cart drawer use the same list and rounding.
+ */
+export const WHOLE_UNIT_CURRENCIES = [
+  'AFN', 'ALL', 'BIF', 'CLP', 'COP', 'DJF', 'GNF', 'HUF', 'IDR', 'IQD', 'IRR',
+  'ISK', 'JPY', 'KMF', 'KPW', 'KRW', 'LAK', 'LBP', 'MGA', 'MMK', 'PYG', 'RWF',
+  'SLL', 'SOS', 'SYP', 'UGX', 'UYI', 'VND', 'VUV', 'XAF', 'XOF', 'XPF', 'YER',
+];
+
+/**
+ * An amount in cents rounded to what the currency can charge: the nearest
+ * cent, or the nearest whole unit (a multiple of 100 cents) in a currency
+ * without cents. Halves round up.
+ *
+ * @param {number} cents
+ * @param {string} currencyCode
+ */
+export function roundToCurrency(cents, currencyCode) {
+  return WHOLE_UNIT_CURRENCIES.includes(currencyCode) ? Math.round(cents / 100) * 100 : Math.round(cents);
+}
+
+/**
  * The deal price in another currency, in cents of that currency, or null when
  * the deal doesn't apply: no saved shop-currency price for the variant, or a
  * deal price that isn't below it (the same rule as in the shop's currency).
@@ -60,12 +87,13 @@ export function toCents(amount) {
  * @param {number} unitCents The variant's price in the cart's currency, in cents.
  * @param {number} dealPrice The `custom.upsell_price` value (shop currency).
  * @param {string | undefined} basePrice The variant's shop-currency price.
+ * @param {string} currencyCode The cart's currency.
  * @returns {number | null}
  */
-export function localDealCents(unitCents, dealPrice, basePrice) {
+export function localDealCents(unitCents, dealPrice, basePrice, currencyCode) {
   if (basePrice == null) return null;
   const dealCents = toCents(dealPrice);
   const baseCents = toCents(basePrice);
   if (!(baseCents > 0) || !(dealCents > 0) || !(dealCents < baseCents)) return null;
-  return Math.round((unitCents * dealCents) / baseCents);
+  return roundToCurrency((unitCents * dealCents) / baseCents, currencyCode);
 }

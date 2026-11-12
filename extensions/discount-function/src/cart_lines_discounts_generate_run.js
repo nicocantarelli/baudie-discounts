@@ -135,15 +135,17 @@ function upsellCandidates(input) {
     if (line.sellingPlanAllocation) continue;
 
     const unit = parseFloat(line.cost.amountPerQuantity.amount);
+    const currencyCode = line.cost.amountPerQuantity.currencyCode;
     let amountOff;
-    if (dealIsInShopCurrency(pricing, line.cost.amountPerQuantity.currencyCode)) {
+    if (dealIsInShopCurrency(pricing, currencyCode)) {
       if (!(unit > deal)) continue; // already at or below the deal price
       amountOff = (unit - deal).toFixed(2);
     } else {
       // Another currency: the market price (price lists, rounding) is the
-      // line's own price, and the deal keeps its share of it.
+      // line's own price, and the deal keeps its share of it, rounded to what
+      // the currency can charge (whole yen, for example).
       const unitCents = toCents(unit);
-      const dealCents = localDealCents(unitCents, deal, pricing.basePrices[line.merchandise.id]);
+      const dealCents = localDealCents(unitCents, deal, pricing.basePrices[line.merchandise.id], currencyCode);
       if (dealCents === null || !(unitCents > dealCents)) continue;
       amountOff = ((unitCents - dealCents) / 100).toFixed(2);
     }
