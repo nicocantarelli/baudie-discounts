@@ -1,4 +1,4 @@
-# Baudie Discounts — Shopify Discount Function
+# Baudie Gifts & Deals
 
 Automatic discount for the **Baudie** storefront ([baudie.com](https://baudie.com)), implemented as a Shopify Function (JavaScript compiled to WASM, executed by Shopify at cart evaluation time). Extension-only app — no server.
 
