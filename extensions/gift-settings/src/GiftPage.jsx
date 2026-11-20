@@ -78,6 +78,9 @@ export default function GiftPage() {
     });
   const removeRow = (listKey, index) =>
     update({ [listKey]: promo[listKey].filter((_, i) => i !== index) });
+  // A pick-your-scent bundle picked as a gift (see ./scent-bundles.js).
+  const refuseGift = (title) =>
+    setNotice({ tone: "critical", text: t("errors.scentBundle", { title }) });
 
   if (loadError) {
     return (
@@ -204,6 +207,7 @@ export default function GiftPage() {
                 <GiftPicker
                   gift={tier.gift}
                   onPick={(gift) => updateRow("tiers", index, { gift })}
+                  onRefuse={refuseGift}
                 />
               </s-stack>
             </s-box>
@@ -256,6 +260,7 @@ export default function GiftPage() {
                 <GiftPicker
                   gift={row.gift}
                   onPick={(gift) => updateRow("vip", index, { gift })}
+                  onRefuse={refuseGift}
                 />
               </s-stack>
             </s-box>
@@ -312,11 +317,12 @@ function RowHeader({ title, removeLabel, onRemove }) {
   );
 }
 
-function GiftPicker({ gift, onPick }) {
+function GiftPicker({ gift, onPick, onRefuse }) {
   const { i18n } = shopify;
   const choose = async () => {
     const picked = await pickGift(gift);
-    if (picked) onPick(picked);
+    if (picked?.refused) onRefuse(picked.refused);
+    else if (picked?.gift) onPick(picked.gift);
   };
 
   if (!gift) {

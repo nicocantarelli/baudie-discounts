@@ -24,6 +24,8 @@
 // three keep the deal price as saved in every currency, so saving the page
 // switches them over together.
 
+import { scentBundleIds } from './scent-bundles';
+
 const NAMESPACE = 'custom';
 const KEY = 'upsell_price';
 const OFFERS_NAMESPACE = 'baudie';
@@ -211,15 +213,24 @@ export async function loadUpsellDeals() {
   return { rows, discount, bundles, shopId: shopData.shop.id, shopCurrency, offersStale };
 }
 
-/** Opens the product picker for products to add, returns rows (no deal price yet). */
+/**
+ * Opens the product picker for products to add. Returns their rows (no deal
+ * price yet), and the titles of the pick-your-scent bundles left out, which
+ * can't be a deal (see ./scent-bundles.js).
+ */
 export async function pickUpsellProducts(existingIds) {
   const selection = await shopify.resourcePicker({
     type: 'product',
     multiple: true,
     filter: { variants: false, draft: false, archived: false },
   });
-  return (selection ?? [])
-    .filter((product) => !existingIds.includes(product.id))
+  const picked = (selection ?? []).filter((product) => !existingIds.includes(product.id));
+  const bundleIds = await scentBundleIds(picked.map((product) => product.id));
+  const refused = picked
+    .filter((product) => bundleIds.has(product.id))
+    .map((product) => product.title);
+  const rows = picked
+    .filter((product) => !bundleIds.has(product.id))
     .map((product) => ({
       productId: product.id,
       handle: product.handle,
@@ -232,6 +243,7 @@ export async function pickUpsellProducts(existingIds) {
       dealPrice: '',
       offered: true,
     }));
+  return { rows, refused };
 }
 
 /** A translation key for the first problem, or null when everything is fine. */

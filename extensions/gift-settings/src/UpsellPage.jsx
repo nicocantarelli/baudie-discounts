@@ -74,10 +74,14 @@ export default function UpsellPage() {
     setNotice(null);
   };
   const addProducts = async () => {
-    const added = await pickUpsellProducts(rows.map((row) => row.productId));
+    const { rows: added, refused } = await pickUpsellProducts(rows.map((row) => row.productId));
     if (added.length) {
       setRows((current) => [...current, ...added]);
       setNotice(null);
+    }
+    // Pick-your-scent bundles can't be a deal (see ./scent-bundles.js).
+    if (refused.length) {
+      setNotice({ tone: "critical", text: t("errors.scentBundle", { titles: refused.join(", ") }) });
     }
   };
 

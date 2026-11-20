@@ -7,6 +7,8 @@
 // It's a shop metafield rather than one on the discount because the theme can
 // read shop metafields in Liquid, and a discount's can't be read there.
 
+import { scentBundleIds } from './scent-bundles';
+
 export const MAX_TIERS = 3;
 export const MAX_VIP_GIFTS = 3;
 
@@ -137,7 +139,11 @@ export async function loadGiftPromo() {
   };
 }
 
-/** Opens the product picker and returns the chosen gift, or null if cancelled. */
+/**
+ * Opens the product picker and returns `{ gift }`, `{ refused: title }` for a
+ * pick-your-scent bundle (which can't be a gift, see ./scent-bundles.js), or
+ * null if cancelled.
+ */
 export async function pickGift(current) {
   const selection = await shopify.resourcePicker({
     type: 'product',
@@ -153,14 +159,20 @@ export async function pickGift(current) {
   const variant = product.variants?.[0];
   if (!variant?.id) return null;
 
+  if ((await scentBundleIds([product.id])).has(product.id)) {
+    return { refused: product.title };
+  }
+
   const variantTitle =
     variant.title && variant.title !== 'Default Title' ? ` – ${variant.title}` : '';
   return {
-    variantId: variant.id,
-    productId: product.id,
-    productHandle: product.handle,
-    title: `${product.title}${variantTitle}`,
-    image: variant.image?.originalSrc ?? product.images?.[0]?.originalSrc ?? null,
+    gift: {
+      variantId: variant.id,
+      productId: product.id,
+      productHandle: product.handle,
+      title: `${product.title}${variantTitle}`,
+      image: variant.image?.originalSrc ?? product.images?.[0]?.originalSrc ?? null,
+    },
   };
 }
 

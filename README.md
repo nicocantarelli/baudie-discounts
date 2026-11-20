@@ -50,6 +50,7 @@ Settings live in the **`baudie.gift_promo` shop metafield** (JSON), saved by the
 - **`gift-settings`**: the app's own pages (Apps → **Baudie Gifts & Deals** in the admin sidebar, with *Gift with purchase* and *Upsell deals* listed under it via `s-app-nav`), an App Home UI extension (`admin.app.home.render`) that Shopify hosts, so there's still no server. App Home UI extensions are for custom-distribution apps only, which this is. Routing is preact-iso.
   - *Gift with purchase* (home, `/gifts`): status, dates, up to 3 spend tiers, up to 3 VIP code gifts, blocked-code message; writes the `baudie.gift_promo` shop metafield through `shopify.query`.
   - *Upsell deals* (`/upsell-deals`): the products on the deal with their regular and deal prices; edit a deal price, add products with the product picker, take one off the deal. Writes or deletes each product's `custom.upsell_price` metafield (`write_products`), which the function, the cart drawer and the checkout upsell all read. Each product also has an *Offer in the cart and checkout* switch: saving writes the `baudie.upsell_offers` shop metafield (JSON: the offered products with their handle and variant, the bundles that already include each one from their `custom.bundle_companion`, every deal product's id, the shop's currency and every deal variant's price in it), which the theme's cart drawer and the [checkout upsell](https://github.com/nicocantarelli/baudie-checkout-upsell) read to pick what they suggest, and which the function, the drawer and the checkout use to set the deal price in other currencies. The page asks for a save when that metafield is missing or no longer matches the products (a bundle, a handle or a deal variant's price changed). Also shows the discount that runs the deal, with a link to it.
+  - Neither page's product picker takes a pick-your-scent bundle (a product whose variant has the `simple_bundles.variant_options` metafield, `src/scent-bundles.js`), and the page says why: the cart drawer and the checkout upsell add a gift or a deal without the customer's scents, so the scent bundle check would stop that order at payment.
 - **`discount-ui`**: the admin UI extension on the Upsell deal discount's page: explains the upsell deal, keeps the discount at exactly the Product class, and links to the gift settings page. Only Product: with Order or Shipping on as well, Shopify treats the discount as an order discount too, and a code that doesn't combine with order discounts (Klaviyo's VIP gift codes do this) knocks the upsell deal off the cart.
 
 ## Structure
@@ -76,7 +77,8 @@ baudie-discounts/
     │       ├── GiftPage.jsx               # Gift with purchase settings
     │       ├── gift-promo.js              # Load / validate / save the gift settings
     │       ├── UpsellPage.jsx             # Upsell deals: products and deal prices
-    │       └── upsell-deals.js            # Load / validate / save the deal prices
+    │       ├── upsell-deals.js            # Load / validate / save the deal prices
+    │       └── scent-bundles.js           # Which picked products are pick-your-scent bundles
     ├── gift-checkout-rule/
     │   ├── src/
     │   │   └── cart_validations_generate_run.js   # Blocks payment for a gift that isn't free

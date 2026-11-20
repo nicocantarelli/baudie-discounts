@@ -53,7 +53,8 @@
       "vipGift": "Each VIP gift needs a gift.",
       "vipDuplicate": "Two VIP gifts use the same code prefix.",
       "noTiers": "Add at least one gift tier before turning the promo on or previewing it.",
-      "dates": "The end date can't be before the start date."
+      "dates": "The end date can't be before the start date.",
+      "scentBundle": "{{title}} can't be a gift. It's a pick-your-scent bundle, and the cart drawer adds a gift without the customer's scents, so the order would be stopped at payment."
     }
   },
   "nav": {
@@ -98,7 +99,8 @@
     "offersStale": "Save to update the offers and the deal prices in other currencies in the cart drawer and checkout.",
     "errors": {
       "dealPrice": "Each product needs a deal price above $0.",
-      "dealNotLower": "A deal price must be lower than the product's regular price."
+      "dealNotLower": "A deal price must be lower than the product's regular price.",
+      "scentBundle": "Not added: {{titles}}. Pick-your-scent bundles can't be on the deal, because the cart drawer and the checkout add a deal product without the customer's scents, so the order would be stopped at payment."
     }
   }
 }
