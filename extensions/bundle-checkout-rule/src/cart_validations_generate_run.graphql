@@ -1,0 +1,49 @@
+query CartValidationsGenerateRunInput {
+  buyerJourney {
+    step
+  }
+  cart {
+    lines {
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          id
+          product {
+            title
+          }
+          # Simple Bundles' option groups on a pick-your-scent ("Infinite
+          # options") bundle: [{ "optionName": "Scents", "optionValues": "..." }].
+          # Only those bundles have it; fixed bundles (the Wipes 3-pack) and
+          # regular products don't.
+          bundleOptions: metafield(namespace: "simple_bundles", key: "variant_options") {
+            jsonValue
+          }
+        }
+      }
+      # One per option group the theme sends (see OPTION_ATTRIBUTES in
+      # cart_validations_generate_run.js, which must list the same keys). A
+      # line's attributes can only be read by name, so a new option group name
+      # needs its own alias here.
+      wipes: attribute(key: "Wipes") {
+        value
+      }
+      scents: attribute(key: "Scents") {
+        value
+      }
+      firstScent: attribute(key: "First Scent") {
+        value
+      }
+      secondScent: attribute(key: "Second Scent") {
+        value
+      }
+      thirdScent: attribute(key: "Third Scent") {
+        value
+      }
+      # The summary of the picks ("A <> B") the theme and Simple Bundles' own
+      # widget send alongside the option groups.
+      bundleSelection: attribute(key: "_bundle_selection") {
+        value
+      }
+    }
+  }
+}

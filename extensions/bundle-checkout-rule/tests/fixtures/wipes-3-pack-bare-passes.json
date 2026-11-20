@@ -1,0 +1,34 @@
+{
+  "payload": {
+    "export": "cart-validations-generate-run",
+    "target": "cart.validations.generate.run",
+    "input": {
+      "buyerJourney": {
+        "step": "CHECKOUT_COMPLETION"
+      },
+      "cart": {
+        "lines": [
+          {
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/45428968620076",
+              "product": {
+                "title": "Organic Cotton Dry Wipes (3-Pack)"
+              },
+              "bundleOptions": null
+            },
+            "wipes": null,
+            "scents": null,
+            "firstScent": null,
+            "secondScent": null,
+            "thirdScent": null,
+            "bundleSelection": null
+          }
+        ]
+      }
+    },
+    "output": {
+      "operations": []
+    }
+  }
+}

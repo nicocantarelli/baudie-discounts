@@ -1,0 +1,110 @@
+{
+  "payload": {
+    "export": "cart-validations-generate-run",
+    "target": "cart.validations.generate.run",
+    "input": {
+      "buyerJourney": {
+        "step": "CHECKOUT_INTERACTION"
+      },
+      "cart": {
+        "lines": [
+          {
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/45896618573868",
+              "product": {
+                "title": "The Essentials Duo"
+              },
+              "bundleOptions": {
+                "jsonValue": [
+                  {
+                    "optionName": "Wipes",
+                    "optionValues": "Organic Cotton Dry Wipes"
+                  },
+                  {
+                    "optionName": "Scents",
+                    "optionValues": "Deep Ritual, Capri Seaside, Barely There, Sweet Muse, St.Tropez, Petal Kiss"
+                  }
+                ]
+              }
+            },
+            "wipes": null,
+            "scents": null,
+            "firstScent": null,
+            "secondScent": null,
+            "thirdScent": null,
+            "bundleSelection": null
+          },
+          {
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/45405067640876",
+              "product": {
+                "title": "Petal Kiss"
+              },
+              "bundleOptions": null
+            },
+            "wipes": null,
+            "scents": null,
+            "firstScent": null,
+            "secondScent": null,
+            "thirdScent": null,
+            "bundleSelection": null
+          },
+          {
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/45414558826540",
+              "product": {
+                "title": "Bundle of 3"
+              },
+              "bundleOptions": {
+                "jsonValue": [
+                  {
+                    "optionName": "First Scent",
+                    "optionValues": "Barely There, Capri Seaside, Deep Ritual, Petal Kiss, St.Tropez, Sweet Muse",
+                    "optionInventories": "3,0,9999,3,3,3"
+                  },
+                  {
+                    "optionName": "Second Scent",
+                    "optionValues": "Barely There, Capri Seaside, Deep Ritual, Petal Kiss, St.Tropez, Sweet Muse",
+                    "optionInventories": "3,0,9999,3,3,3"
+                  },
+                  {
+                    "optionName": "Third Scent",
+                    "optionValues": "Barely There, Capri Seaside, Deep Ritual, Petal Kiss, St.Tropez, Sweet Muse",
+                    "optionInventories": "3,0,9999,3,3,3"
+                  }
+                ]
+              }
+            },
+            "wipes": null,
+            "scents": null,
+            "firstScent": null,
+            "secondScent": null,
+            "thirdScent": null,
+            "bundleSelection": null
+          }
+        ]
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "validationAdd": {
+            "errors": [
+              {
+                "message": "Your Essentials Duo is missing its scent. Please remove it and add it again from its product page.",
+                "target": "$.cart"
+              },
+              {
+                "message": "Your Bundle of 3 is missing its scents. Please remove it and add it again from its product page.",
+                "target": "$.cart"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

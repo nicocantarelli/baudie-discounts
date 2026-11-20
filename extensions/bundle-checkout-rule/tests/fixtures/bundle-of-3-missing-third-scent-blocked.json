@@ -1,0 +1,69 @@
+{
+  "payload": {
+    "export": "cart-validations-generate-run",
+    "target": "cart.validations.generate.run",
+    "input": {
+      "buyerJourney": {
+        "step": "CHECKOUT_COMPLETION"
+      },
+      "cart": {
+        "lines": [
+          {
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/45414558826540",
+              "product": {
+                "title": "Bundle of 3"
+              },
+              "bundleOptions": {
+                "jsonValue": [
+                  {
+                    "optionName": "First Scent",
+                    "optionValues": "Barely There, Capri Seaside, Deep Ritual, Petal Kiss, St.Tropez, Sweet Muse",
+                    "optionInventories": "3,0,9999,3,3,3"
+                  },
+                  {
+                    "optionName": "Second Scent",
+                    "optionValues": "Barely There, Capri Seaside, Deep Ritual, Petal Kiss, St.Tropez, Sweet Muse",
+                    "optionInventories": "3,0,9999,3,3,3"
+                  },
+                  {
+                    "optionName": "Third Scent",
+                    "optionValues": "Barely There, Capri Seaside, Deep Ritual, Petal Kiss, St.Tropez, Sweet Muse",
+                    "optionInventories": "3,0,9999,3,3,3"
+                  }
+                ]
+              }
+            },
+            "wipes": null,
+            "scents": null,
+            "firstScent": {
+              "value": "Barely There"
+            },
+            "secondScent": {
+              "value": "Petal Kiss"
+            },
+            "thirdScent": null,
+            "bundleSelection": {
+              "value": "Barely There <> Petal Kiss"
+            }
+          }
+        ]
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "validationAdd": {
+            "errors": [
+              {
+                "message": "Your Bundle of 3 is missing its scents. Please remove it and add it again from its product page.",
+                "target": "$.cart"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

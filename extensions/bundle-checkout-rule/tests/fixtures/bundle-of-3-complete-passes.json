@@ -1,0 +1,60 @@
+{
+  "payload": {
+    "export": "cart-validations-generate-run",
+    "target": "cart.validations.generate.run",
+    "input": {
+      "buyerJourney": {
+        "step": "CHECKOUT_COMPLETION"
+      },
+      "cart": {
+        "lines": [
+          {
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/45414558826540",
+              "product": {
+                "title": "Bundle of 3"
+              },
+              "bundleOptions": {
+                "jsonValue": [
+                  {
+                    "optionName": "First Scent",
+                    "optionValues": "Barely There, Capri Seaside, Deep Ritual, Petal Kiss, St.Tropez, Sweet Muse",
+                    "optionInventories": "3,0,9999,3,3,3"
+                  },
+                  {
+                    "optionName": "Second Scent",
+                    "optionValues": "Barely There, Capri Seaside, Deep Ritual, Petal Kiss, St.Tropez, Sweet Muse",
+                    "optionInventories": "3,0,9999,3,3,3"
+                  },
+                  {
+                    "optionName": "Third Scent",
+                    "optionValues": "Barely There, Capri Seaside, Deep Ritual, Petal Kiss, St.Tropez, Sweet Muse",
+                    "optionInventories": "3,0,9999,3,3,3"
+                  }
+                ]
+              }
+            },
+            "wipes": null,
+            "scents": null,
+            "firstScent": {
+              "value": "Barely There"
+            },
+            "secondScent": {
+              "value": "Petal Kiss"
+            },
+            "thirdScent": {
+              "value": "St.Tropez"
+            },
+            "bundleSelection": {
+              "value": "Barely There <> Petal Kiss <> St.Tropez"
+            }
+          }
+        ]
+      }
+    },
+    "output": {
+      "operations": []
+    }
+  }
+}

@@ -34,6 +34,16 @@ Settings live in the **`baudie.gift_promo` shop metafield** (JSON), saved by the
 - **Single-function design**: the upsell deal and the gifts share one automatic discount, so they always apply together: there's no "only one automatic discount applies" conflict and no combination settings to keep in sync. Turning the discount off stops both
 - **Checkout rule (`gift-checkout-rule`)**: a backstop for the theme. A gift line must be free at checkout. One that isn't (its promo ended, the spend dropped, the discount is off, its VIP code is gone) blocks payment with a message sending the customer back to their cart, where the theme removes it. That's what catches a checkout reopened later, like an abandoned-checkout email opened after the promo ended. It only checks checkout steps (`buyerJourney.step` = `CHECKOUT_INTERACTION` / `CHECKOUT_COMPLETION`), never cart changes, so the theme's own cart updates always go through, and it covers express payments at checkout too. Validation runs after discounts, so it simply checks each gift line's `totalAmount`. **It has to be turned on once in the admin:** Settings → Checkout → Checkout rules → Add rule → *Gift with purchase check* → turn it on
 
+### Scent bundle check
+
+**Checkout rule (`bundle-checkout-rule`)**: a backstop for Simple Bundles' pick-your-scent bundles (the Essentials Duo, the Bundle of 3). Those are "Infinite options" bundles: Simple Bundles only expands one into the products the 3PL ships when its cart line carries one property per option group (the theme sends `Wipes` and `Scents` for the Duo, `First Scent` to `Third Scent` for the Bundle of 3, plus `_bundle_selection`). Shopify's **Buy again** (new customer accounts), cart links and any bare `/cart/add` rebuild the line from the variant and quantity alone, so the order came in as one parent line with no SKU (#12358, #13184). This rule blocks payment for such a line: "Your Essentials Duo is missing its scent. Please remove it and add it again from its product page."
+
+- **Which lines**: a line is a pick bundle when its variant has the `simple_bundles.variant_options` metafield (Simple Bundles writes it on Infinite options bundles); every `optionName` in it needs a non-empty line property. Fixed bundles such as the Wipes 3-pack don't have the metafield and always pass, so a new pick bundle is covered without a code change and a bundle that moves to one variant per scent drops out on its own
+- **Reading properties**: a function can only read a line property by name, so the input query has one alias per option group name (`OPTION_ATTRIBUTES` in `src/cart_validations_generate_run.js` lists the same names). An option group without an alias counts as picked when the line carries `_bundle_selection`, which every add from the theme or the app's own widget does; a bare line has neither. Give a new option group name its own alias to check it exactly
+- **Message**: built from the product title (a leading "The" dropped), "scent" or "scents" by how many scent groups the bundle has
+- **Cart Transform**: validation runs after Simple Bundles' Cart Transform. An expanded bundle passes either way (its parent carries the picks, its components are plain products), and one the transform couldn't expand is still the bare parent
+- Like the gift check, it only checks checkout steps, never cart changes, so the message shows at checkout, not in the cart. **It has to be turned on once in the admin:** Settings → Checkout → Checkout rules → Add rule → *Scent bundle check* → turn it on
+
 ### Shared
 
 - **Delivery target is an intentional no-op**: the function can never emit a shipping discount regardless of which discount classes get enabled on the discount node
@@ -67,9 +77,13 @@ baudie-discounts/
     │       ├── gift-promo.js              # Load / validate / save the gift settings
     │       ├── UpsellPage.jsx             # Upsell deals: products and deal prices
     │       └── upsell-deals.js            # Load / validate / save the deal prices
-    └── gift-checkout-rule/
+    ├── gift-checkout-rule/
+    │   ├── src/
+    │   │   └── cart_validations_generate_run.js   # Blocks payment for a gift that isn't free
+    │   └── tests/fixtures/                # One input/output pair per rule
+    └── bundle-checkout-rule/
         ├── src/
-        │   └── cart_validations_generate_run.js   # Blocks payment for a gift that isn't free
+        │   └── cart_validations_generate_run.js   # Blocks payment for a pick bundle missing its scents
         └── tests/fixtures/                # One input/output pair per rule
 ```
 
@@ -84,7 +98,8 @@ npm install
 shopify app dev        # Run against a dev store (functions from a custom app need a Plus store)
 shopify app deploy     # Release a new function version
 cd extensions/discount-function && npx vitest run   # Fixture tests (needs `shopify` on PATH)
-cd extensions/gift-checkout-rule && npx vitest run  # Same for the checkout rule
+cd extensions/gift-checkout-rule && npx vitest run  # Same for the checkout rules
+cd extensions/bundle-checkout-rule && npx vitest run
 ```
 
 ## License

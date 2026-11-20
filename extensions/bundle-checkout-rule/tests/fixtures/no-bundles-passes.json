@@ -1,0 +1,50 @@
+{
+  "payload": {
+    "export": "cart-validations-generate-run",
+    "target": "cart.validations.generate.run",
+    "input": {
+      "buyerJourney": {
+        "step": "CHECKOUT_COMPLETION"
+      },
+      "cart": {
+        "lines": [
+          {
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/45405067640876",
+              "product": {
+                "title": "Petal Kiss"
+              },
+              "bundleOptions": null
+            },
+            "wipes": null,
+            "scents": null,
+            "firstScent": null,
+            "secondScent": null,
+            "thirdScent": null,
+            "bundleSelection": null
+          },
+          {
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/45405073309740",
+              "product": {
+                "title": "Organic Cotton Dry Wipes"
+              },
+              "bundleOptions": null
+            },
+            "wipes": null,
+            "scents": null,
+            "firstScent": null,
+            "secondScent": null,
+            "thirdScent": null,
+            "bundleSelection": null
+          }
+        ]
+      }
+    },
+    "output": {
+      "operations": []
+    }
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "name": "Scent bundle check",
+  "description": "Blocks payment when a pick-your-scent bundle (the Essentials Duo, the Bundle of 3) reaches checkout without its picked scents, such as from Buy again or a cart link, and asks the customer to add it again from its product page."
+}

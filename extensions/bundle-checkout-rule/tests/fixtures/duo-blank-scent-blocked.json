@@ -1,0 +1,62 @@
+{
+  "payload": {
+    "export": "cart-validations-generate-run",
+    "target": "cart.validations.generate.run",
+    "input": {
+      "buyerJourney": {
+        "step": "CHECKOUT_COMPLETION"
+      },
+      "cart": {
+        "lines": [
+          {
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/45896618573868",
+              "product": {
+                "title": "The Essentials Duo"
+              },
+              "bundleOptions": {
+                "jsonValue": [
+                  {
+                    "optionName": "Wipes",
+                    "optionValues": "Organic Cotton Dry Wipes"
+                  },
+                  {
+                    "optionName": "Scents",
+                    "optionValues": "Deep Ritual, Capri Seaside, Barely There, Sweet Muse, St.Tropez, Petal Kiss"
+                  }
+                ]
+              }
+            },
+            "wipes": {
+              "value": "Organic Cotton Dry Wipes"
+            },
+            "scents": {
+              "value": "  "
+            },
+            "firstScent": null,
+            "secondScent": null,
+            "thirdScent": null,
+            "bundleSelection": {
+              "value": "Organic Cotton Dry Wipes <> "
+            }
+          }
+        ]
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "validationAdd": {
+            "errors": [
+              {
+                "message": "Your Essentials Duo is missing its scent. Please remove it and add it again from its product page.",
+                "target": "$.cart"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

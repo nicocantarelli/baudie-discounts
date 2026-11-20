@@ -1,0 +1,52 @@
+{
+  "payload": {
+    "export": "cart-validations-generate-run",
+    "target": "cart.validations.generate.run",
+    "input": {
+      "buyerJourney": {
+        "step": "CHECKOUT_COMPLETION"
+      },
+      "cart": {
+        "lines": [
+          {
+            "merchandise": {
+              "__typename": "ProductVariant",
+              "id": "gid://shopify/ProductVariant/1",
+              "product": {
+                "title": "Travel Kit"
+              },
+              "bundleOptions": {
+                "jsonValue": [
+                  {
+                    "optionName": "Color",
+                    "optionValues": "Rose, Sage"
+                  }
+                ]
+              }
+            },
+            "wipes": null,
+            "scents": null,
+            "firstScent": null,
+            "secondScent": null,
+            "thirdScent": null,
+            "bundleSelection": null
+          }
+        ]
+      }
+    },
+    "output": {
+      "operations": [
+        {
+          "validationAdd": {
+            "errors": [
+              {
+                "message": "Your Travel Kit is missing its options. Please remove it and add it again from its product page.",
+                "target": "$.cart"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
